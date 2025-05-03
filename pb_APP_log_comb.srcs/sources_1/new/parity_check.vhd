@@ -2,9 +2,9 @@
 -- Company:
 -- Engineer:
 --
--- Create Date: 05/03/2025 12:04:25 PM
+-- Create Date: 05/03/2025 03:20:01 PM
 -- Design Name:
--- Module Name: is_even - Behavioral
+-- Module Name: parity_check - Behavioral
 -- Project Name:
 -- Target Devices:
 -- Tool Versions:
@@ -31,19 +31,36 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity is_even is
-    Port ( x : in STD_LOGIC_VECTOR (3 downto 0);
-           o : out STD_LOGIC);
-end is_even;
+entity parity_check is
+    Port ( ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
+           S1 : in STD_LOGIC;
+           Parite : out STD_LOGIC);
+end parity_check;
 
-architecture Behavioral of is_even is
+architecture Behavioral of parity_check is
 
-  signal y : STD_LOGIC_VECTOR (0 to 1);
+  signal Y : STD_LOGIC_VECTOR (2 downto 0);
+  signal PreFlip : STD_LOGIC;
 
 begin
 
-  y(0) <= x(0) xor x(1);
-  y(1) <= x(2) xor x(3);
-  o <= y(0) xor y(1);
+  Y(0) <= ADCbin(0) xor ADCbin(1);
+  Y(1) <= ADCbin(2) xor ADCbin(3);
+  Y(2) <= Y(0) xor Y(1);
+
+  flipCheck : process(Y, S1)
+  begin
+
+    case (S1) is
+      when '0' =>
+         Parite <= Y(2);
+      when '1' =>
+         Parite <= not Y(2);
+      when others =>
+         Parite <= '0';
+   end case;
+
+  end process;
+
 
 end Behavioral;
