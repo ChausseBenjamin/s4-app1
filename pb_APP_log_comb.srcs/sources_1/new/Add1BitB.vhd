@@ -1,21 +1,21 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
+-- Company:
+-- Engineer:
+--
 -- Create Date: 04/30/2025 03:19:19 PM
--- Design Name: 
+-- Design Name:
 -- Module Name: Add1BitB - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
+-- Project Name:
+-- Target Devices:
+-- Tool Versions:
+-- Description:
+--
+-- Dependencies:
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- 
+--
 ----------------------------------------------------------------------------------
 
 
@@ -41,7 +41,48 @@ end Add1BitB;
 
 architecture Behavioral of Add1BitB is
 
+  signal buf: STD_LOGIC_VECTOR(2 downto 0);
+
 begin
+
+Adder: process(X, Y, Ci) is
+begin
+  buf(0) <= X;
+  buf(1) <= Y;
+  buf(2) <= Ci;
+
+     case (buf) is
+      when "000" =>
+         O <= '0';
+         Co <= '0';
+      when "001" =>
+         O <= '1';
+         Co <= '0';
+      when "010" =>
+         O <= '1';
+         Co <= '0';
+      when "011" =>
+         O <= '0';
+         Co <= '1';
+      when "100" =>
+         O <= '1';
+         Co <= '0';
+      when "101" =>
+         O <= '0';
+         Co <= '1';
+      when "110" =>
+         O <= '0';
+         Co <= '1';
+      when "111" =>
+         O <= '1';
+         Co <= '1';
+      when others =>
+         O <= '0';
+         Co <= '0';
+   end case;
+
+end process Adder;
+
 
 
 end Behavioral;
