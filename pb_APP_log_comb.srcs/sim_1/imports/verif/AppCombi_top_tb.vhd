@@ -14,8 +14,8 @@
 -- Description:
 -- Banc d'essai pour circuit combinatoire Laboratoire logique combinatoire
 -- Version avec entrées toutes combinatoires CIRCUIT COMPLET (TOP)
--- 
--- Revision v1 12 novembre 2018, 3 décembre 2018 D. Dalle 
+--
+-- Revision v1 12 novembre 2018, 3 décembre 2018 D. Dalle
 -- Revision 30 Avril 2021, M-A Tetrault
 --
 ---------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 -- requis pour enoncés de type mem_valeurs_tests(to_integer( unsigned(table_valeurs_adr(9 downto 6) )));
-USE ieee.numeric_std.ALL;          -- 
+use ieee.numeric_std.ALL;          --
 use IEEE.STD_LOGIC_UNSIGNED.ALL;   --
 
 
@@ -44,72 +44,70 @@ end AppCombi_top_tb;
 
 architecture Behavioral of AppCombi_top_tb is
 
-COMPONENT verif_show_affhex is
-end COMPONENT;
+  component verif_show_affhex is
+  end component;
 
-COMPONENT AppCombi_top
-   port ( 
-     i_btn       : in    std_logic_vector (3 downto 0); 
-     i_sw        : in    std_logic_vector (3 downto 0); 
-     sysclk      : in    std_logic; 
-     o_SSD       : out   std_logic_vector (7 downto 0); 
-     o_led       : out   std_logic_vector (3 downto 0); 
-     o_led6_r    : out   std_logic;        
-     o_pmodled   : out   std_logic_vector (7 downto 0) 
-     );    
-end COMPONENT;
+  component AppCombi_top port (
+    i_btn     : in  std_logic_vector (3 downto 0);
+    i_sw      : in  std_logic_vector (3 downto 0);
+    sysclk    : in  std_logic;
+    o_SSD     : out std_logic_vector (7 downto 0);
+    o_led     : out std_logic_vector (3 downto 0);
+    o_led6_r  : out std_logic;
+    o_pmodled : out std_logic_vector (7 downto 0));
+  end component;
 
-   signal clk_sim       :  STD_LOGIC := '0';
-   signal pmodled_sim   :  STD_LOGIC_VECTOR (7 DOWNTO 0);
-   signal led_sim       :  STD_LOGIC_VECTOR (3 DOWNTO 0);
-   signal led6_r_sim    :  STD_LOGIC := '0';
-   signal SSD_sim       :  STD_LOGIC_VECTOR (7 DOWNTO 0) := "00000000";
-   signal sw_sim        :  STD_LOGIC_VECTOR (3 DOWNTO 0) := "0000";
-   signal btn_sim       :  STD_LOGIC_VECTOR (3 DOWNTO 0) := "0000";
-   signal cin_sim       :  STD_LOGIC := '0';
-   signal vecteur_test_sim   :  STD_LOGIC_VECTOR (13 DOWNTO 0) := (others => '0');
-   signal resultat_attendu       :  STD_LOGIC_VECTOR (4 DOWNTO 0) := "00000";
+  signal clk_sim     : STD_LOGIC := '0';
+  signal pmodled_sim : STD_LOGIC_VECTOR (7 downto 0);
+  signal led_sim     : STD_LOGIC_VECTOR (3 downto 0);
+  signal led6_r_sim  : STD_LOGIC := '0';
+  signal SSD_sim     : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
+  signal sw_sim      : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+  signal btn_sim     : STD_LOGIC_VECTOR (3 downto 0) := "0000";
+  signal cin_sim     : STD_LOGIC := '0';
 
-COMPONENT Add4Bits
-    PORT (
-        A  : in  STD_LOGIC_VECTOR(3 downto 0);
-        B  : in  STD_LOGIC_VECTOR(3 downto 0);
-        C  : in  STD_LOGIC;
-        R  : out STD_LOGIC_VECTOR(3 downto 0);
-        Rc : out STD_LOGIC
-    );
-END COMPONENT;
-    
-    signal add_a_sim  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
-    signal add_b_sim  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
-    signal add_cin_sim : STD_LOGIC := '0';
-    signal add_result_sim : STD_LOGIC_VECTOR(3 downto 0);
-    signal add_cout_sim : STD_LOGIC;
+  signal vecteur_test_sim : STD_LOGIC_VECTOR (13 downto 0) := (others => '0');
+  signal resultat_attendu : STD_LOGIC_VECTOR (4 downto 0)  := "00000";
 
-COMPONENT Fct_2_3 is
-    Port ( ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
-           A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
-END COMPONENT;
+  component Add4Bits port (
+    A  : in  STD_LOGIC_VECTOR(3 downto 0);
+    B  : in  STD_LOGIC_VECTOR(3 downto 0);
+    C  : in  STD_LOGIC;
+    R  : out STD_LOGIC_VECTOR(3 downto 0);
+    Rc : out STD_LOGIC);
+  end component;
 
-    signal fct_input_sim  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
-    signal fct_output_sim  : STD_LOGIC_VECTOR(2 downto 0) := "000";
-    signal fct_vecteur_test_sim   :  STD_LOGIC_VECTOR (6 DOWNTO 0) := (others => '0');
-    signal fct_resultat_attendu   :  STD_LOGIC_VECTOR (2 DOWNTO 0) := "000";
+  signal add_a_sim      : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+  signal add_b_sim      : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+  signal add_cin_sim    : STD_LOGIC                    := '0';
+  signal add_result_sim : STD_LOGIC_VECTOR(3 downto 0);
+  signal add_cout_sim   : STD_LOGIC;
 
-   constant sysclk_Period  : time := 8 ns;
-   
+  component Fct_2_3 is port (
+    ADCbin : in  STD_LOGIC_VECTOR (3 downto 0);
+    A2_3   : out STD_LOGIC_VECTOR (2 downto 0));
+  end component;
+
+  signal fct_input_sim        : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+  signal fct_output_sim       : STD_LOGIC_VECTOR(2 downto 0) := "000";
+  signal fct_vecteur_test_sim : STD_LOGIC_VECTOR(6 downto 0) := (others => '0');
+  signal fct_resultat_attendu : STD_LOGIC_VECTOR(2 downto 0) := "000";
+
+  constant sysclk_Period  : time := 8 ns;
 
 
-----------------------------------------------------------------------------
--- declaration d'un tableau pour soumettre un vecteur de test  
-----------------------------------------------------------------------------  
- type table_valeurs_tests is array (integer range 0 to 63) of std_logic_vector(13 downto 0);
-    constant mem_valeurs_tests : table_valeurs_tests := 
-    ( 
-  --  vecteur de test è modifier selon les besoins
-  --  res      op_a     op_b    cin
-    "00000" & "0000" & "0000" & '0',  --   0 +  0  
-    "00001" & "0000" & "0001" & '0',  --   0 +  1 
+
+  ----------------------------------------------------------------------------
+  -- declaration d'un tableau pour soumettre un vecteur de test
+  ----------------------------------------------------------------------------
+  type table_valeurs_tests is array (integer range 0 to 63) of std_logic_vector(13 downto 0);
+  constant mem_valeurs_tests : table_valeurs_tests := (
+    --  vecteur de test è modifier selon les besoins
+
+    --  res      op_a     op_b    cin
+    "00000" & "0000" & "0000" & '0',  --   0 +  0
+    "00001" & "0000" & "0001" & '0',  --   0 +  1
+
     -- modifez et/ou ajoutez vos valeurs
     "00001" & "0000" & "0000" & '1',  --   carry in
     "01111" & "0000" & "1111" & '0',  --   0 +  F
@@ -118,19 +116,17 @@ END COMPONENT;
     "01111" & "1010" & "0101" & '0',  --
     "01111" & "0101" & "1010" & '0',  --
     "10010" & "1001" & "1001" & '0',  --
-    
-    
+
     -- conserver la ligne ci-bas.
-    others => "00000" & "0000" & "0000" & '0'  --  0 + 0 
-    );
+    others => "00000" & "0000" & "0000" & '0'  --  0 + 0
+  );
 ----------------------------------------------------------------------------
 -- Tableau pour tester les valeurs du module FCT
-----------------------------------------------------------------------------  
- type fct_table_valeurs_tests is array (integer range 0 to 13) of std_logic_vector(6 downto 0);
-    constant fct_mem_valeurs_tests : fct_table_valeurs_tests := 
-    ( 
-  --  vecteur de test è modifier selon les besoins
-  --  res   input
+----------------------------------------------------------------------------
+  type fct_table_valeurs_tests is array (integer range 0 to 13) of std_logic_vector(6 downto 0);
+  constant fct_mem_valeurs_tests : fct_table_valeurs_tests := (
+    --  vecteur de test à modifier selon les besoins
+    --  res   input
     "000" & "0000", -- 0
     "000" & "0001", -- 1
     "001" & "0010",
@@ -145,136 +141,129 @@ END COMPONENT;
     "110" & "1011",
     "111" & "1100", -- 12
     -- conserver la ligne ci-bas.
-    others => "000" & "0000"  --  0 + 0 
-    );
+    others => "000" & "0000"  --  0 + 0
+  );
 ----------------------------------------------------------------------------
 
 begin
 
-uut_add4bits: Add4Bits
-    PORT MAP (
-        A  => add_a_sim,
-        B  => add_b_sim,
-        C  => add_cin_sim,
-        R  => add_result_sim,
-        Rc => add_cout_sim
-    );
-    
-uut_fct_2_3: Fct_2_3
-    PORT MAP (
-        ADCbin => fct_input_sim,
-        A2_3 => fct_output_sim
-    );
+  uut_add4bits: Add4Bits port map (
+    A  => add_a_sim,
+    B  => add_b_sim,
+    C  => add_cin_sim,
+    R  => add_result_sim,
+    Rc => add_cout_sim);
 
--- Pattes du FPGA Zybo-Z7
-uut: AppCombi_top
-   PORT MAP(
-   i_btn       =>   btn_sim,
-   i_sw        =>   sw_sim,
-   sysclk      =>   clk_sim,
-   o_SSD       =>   SSD_sim,
-   o_led       =>   led_sim,
-   o_pmodled   =>   pmodled_sim,
-   o_led6_r    =>   led6_r_sim
-   );
-   
-   
+  uut_fct_2_3: Fct_2_3 port map (
+    ADCbin => fct_input_sim,
+    A2_3 => fct_output_sim);
 
-	-- Section banc de test
+  -- Pattes du FPGA Zybo-Z7
+  uut: AppCombi_top port map(
+    i_btn       =>   btn_sim,
+    i_sw        =>   sw_sim,
+    sysclk      =>   clk_sim,
+    o_SSD       =>   SSD_sim,
+    o_led       =>   led_sim,
+    o_pmodled   =>   pmodled_sim,
+    o_led6_r    =>   led6_r_sim);
+
+
+
+    -- Section banc de test
     ----------------------------------------
-	-- generation horloge 
-	----------------------------------------
-   process
-   begin
+    -- generation horloge
+    ----------------------------------------
+     process
+     begin
        clk_sim <= '1';  -- init
        loop
-           wait for sysclk_Period/2;
-           clk_sim <= not clk_sim;    -- invert clock value
+         wait for sysclk_Period/2;
+         clk_sim <= not clk_sim;    -- invert clock value
        end loop;
-   end process;  
-	----------------------------------------
-   
-   ----------------------------------------
-   -- test bench
-   tb : PROCESS
+     end process;
+    ----------------------------------------
+
+     ----------------------------------------
+     -- test bench
+     tb : process
        variable delai_sim : time  := 50 ns;
        variable table_valeurs_adr : integer range 0 to 63;
        variable fct_table_valeurs_adr : integer range 0 to 13;
+       begin
 
-      BEGIN
-      
          -- Phase 1
          table_valeurs_adr := 0;
-         -- simuler une sequence de valeurs a l'entree 
+         -- simuler une sequence de valeurs a l'entree
          for index in 0 to   mem_valeurs_tests'length-1 loop
-              vecteur_test_sim <= mem_valeurs_tests(table_valeurs_adr);
-              sw_sim  <= vecteur_test_sim (8 downto 5);
-              btn_sim <= vecteur_test_sim (4 downto 1) ;
-              cin_sim <= vecteur_test_sim (0);
-			  resultat_attendu <= vecteur_test_sim(13 downto 9);
-			  
-			  -- Assignation of variables to add4bit
-			  add_a_sim     <= vecteur_test_sim(8 downto 5);
-              add_b_sim     <= vecteur_test_sim(4 downto 1);
-              add_cin_sim   <= vecteur_test_sim(0);   
-			  
-              wait for delai_sim;
+           vecteur_test_sim <= mem_valeurs_tests(table_valeurs_adr);
+           sw_sim  <= vecteur_test_sim (8 downto 5);
+           btn_sim <= vecteur_test_sim (4 downto 1) ;
+           cin_sim <= vecteur_test_sim (0);
+           resultat_attendu <= vecteur_test_sim(13 downto 9);
 
-              -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
-              assert (resultat_attendu(3 downto 0) = add_result_sim)
-                report "Add4Bits: Somme incorrecte. Attendu = " &
-                    integer'image(to_integer(unsigned(resultat_attendu(3 downto 0)))) &
-                    ", Obtenu = " &
-                    integer'image(to_integer(unsigned(add_result_sim))) &
-                    ", A = " &
-                    integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
-                    ", B = " &
-                    integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
-                severity warning;
+           -- Assignation of variables to add4bit
+           add_a_sim     <= vecteur_test_sim(8 downto 5);
+           add_b_sim     <= vecteur_test_sim(4 downto 1);
+           add_cin_sim   <= vecteur_test_sim(0);
 
-              assert (resultat_attendu(4) = add_cout_sim)
-                report "Add4Bits: Retenue incorrecte. Attendu = '" &
-                    std_logic'image(resultat_attendu(4)) &
-                    "', Obtenu = '" &
-                    std_logic'image(add_cout_sim) & "'" &
-                    ", A = " &
-                    integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
-                    ", B = " &
-                    integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
-                severity warning;
+           wait for delai_sim;
 
-              table_valeurs_adr := table_valeurs_adr + 1;
-              if(table_valeurs_adr = 63) then
-                exit;
-              end if;
+           -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
+           assert (resultat_attendu(3 downto 0) = add_result_sim)
+             report "Add4Bits: Somme incorrecte. Attendu = " &
+               integer'image(to_integer(unsigned(resultat_attendu(3 downto 0)))) &
+               ", Obtenu = " &
+               integer'image(to_integer(unsigned(add_result_sim))) &
+               ", A = " &
+               integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
+               ", B = " &
+               integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
+             severity warning;
+
+           assert (resultat_attendu(4) = add_cout_sim)
+             report "Add4Bits: Retenue incorrecte. Attendu = '" &
+               std_logic'image(resultat_attendu(4)) &
+               "', Obtenu = '" &
+               std_logic'image(add_cout_sim) & "'" &
+               ", A = " &
+               integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
+               ", B = " &
+               integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
+             severity warning;
+
+           table_valeurs_adr := table_valeurs_adr + 1;
+           if(table_valeurs_adr = 63) then
+             exit;
+           end if;
          end loop;
-         
-      -- Phase 2: Test de la fonction de multiplication 2/3
+
+         -- Phase 2: Test de la fonction de multiplication 2/3
          fct_table_valeurs_adr := 0;
          for index in 0 to fct_mem_valeurs_tests'length-1 loop
-              fct_vecteur_test_sim <= fct_mem_valeurs_tests(fct_table_valeurs_adr);
-			  fct_resultat_attendu <= fct_vecteur_test_sim(6 downto 4);
-			  fct_input_sim     <= fct_vecteur_test_sim(3 downto 0);
-			  
-              wait for delai_sim;
+           fct_vecteur_test_sim <= fct_mem_valeurs_tests(fct_table_valeurs_adr);
+           fct_resultat_attendu <= fct_vecteur_test_sim(6 downto 4);
+           fct_input_sim        <= fct_vecteur_test_sim(3 downto 0);
 
-              -- Comparation des resultats.
-              assert (fct_resultat_attendu(2 downto 0) = fct_output_sim)
-                report "FCT_2_3: Multiplication incorrecte. Attendu = " &
-                    integer'image(to_integer(unsigned(fct_resultat_attendu))) &
-                    ", Obtenu = " &
-                    integer'image(to_integer(unsigned(fct_output_sim))) &
-                    ", Avec = " &
-                    integer'image(to_integer(unsigned(fct_input_sim)))
-                severity warning;
+             wait for delai_sim;
 
-              fct_table_valeurs_adr := fct_table_valeurs_adr + 1;
-              if(fct_table_valeurs_adr = 63) then
-                exit;
-              end if;
-         end loop; 
-           
-         WAIT; -- will wait forever
-      END PROCESS;
+             -- Comparation des resultats.
+             assert (fct_resultat_attendu(2 downto 0) = fct_output_sim)
+               report "FCT_2_3: Multiplication incorrecte. Attendu = " &
+                 integer'image(to_integer(unsigned(fct_resultat_attendu))) &
+                 ", Obtenu = " &
+                 integer'image(to_integer(unsigned(fct_output_sim))) &
+                 ", Avec = " &
+                 integer'image(to_integer(unsigned(fct_input_sim)))
+               severity warning;
 
-END Behavioral;
+             fct_table_valeurs_adr := fct_table_valeurs_adr + 1;
+             if(fct_table_valeurs_adr = 63) then
+               exit;
+             end if;
+          end loop;
+
+          wait; -- will wait forever
+        end process;
+
+end Behavioral;
