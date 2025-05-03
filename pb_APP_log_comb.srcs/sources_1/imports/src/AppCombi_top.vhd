@@ -44,6 +44,7 @@ architecture BEHAVIORAL of AppCombi_top is
   signal d_s_1Hz       : std_logic;
   signal clk_5MHz      : std_logic;
   --
+  signal led_test_btn: std_logic_vector (2 downto 0):= "000";
   signal d_opa       : std_logic_vector (3 downto 0):= "0000";   -- operande A
   signal d_opb       : std_logic_vector (3 downto 0):= "0000";   -- operande B
   signal d_cin       : std_logic := '0';             -- retenue entree
@@ -80,6 +81,10 @@ architecture BEHAVIORAL of AppCombi_top is
   );
   end component;
 
+  component Decodeur_3_8 is
+    Port ( control_bits : in STD_LOGIC_VECTOR (2 downto 0);
+           bus_out : out STD_LOGIC_VECTOR (7 downto 0));
+  end component;
 
 begin
 
@@ -107,6 +112,13 @@ begin
     R => d_sum,
     Rc => d_cout
   );
+  
+  led_test_btn <= i_btn(2 downto 0);
+  
+  ledTest : Decodeur_3_8 port map (
+    control_bits => led_test_btn,
+    bus_out => o_pmodled
+  );
 
   d_opa         <=  i_sw;  -- operande A sur interrupteurs
   d_opb         <=  i_btn; -- operande B sur boutons
@@ -115,7 +127,7 @@ begin
   d_AFF0        <=  d_sum(3 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
   d_AFF1        <=  '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
   o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
-  o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
+  --o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
   o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
 
 end BEHAVIORAL;
