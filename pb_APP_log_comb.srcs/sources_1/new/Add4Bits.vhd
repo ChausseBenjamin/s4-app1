@@ -32,10 +32,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Add4Bits is
-    Port ( A : in STD_LOGIC_VECTOR (0 to 3);
-           B : in STD_LOGIC_VECTOR (0 to 3);
+    Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
+           B : in STD_LOGIC_VECTOR (3 downto 0);
            C : in STD_LOGIC;
-           R : out STD_LOGIC_VECTOR (0 to 3);
+           R : out STD_LOGIC_VECTOR (3 downto 0);
            Rc : out STD_LOGIC);
 end Add4Bits;
 

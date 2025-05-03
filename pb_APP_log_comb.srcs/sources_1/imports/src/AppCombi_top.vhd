@@ -56,10 +56,10 @@ architecture BEHAVIORAL of AppCombi_top is
 
 
   component Add4Bits is Port (
-    A : in STD_LOGIC_VECTOR (0 to 3);
-    B : in STD_LOGIC_VECTOR (0 to 3);
+    A : in STD_LOGIC_VECTOR (3 downto 0);
+    B : in STD_LOGIC_VECTOR (3 downto 0);
     C : in STD_LOGIC;
-    R : out STD_LOGIC_VECTOR (0 to 3);
+    R : out STD_LOGIC_VECTOR (3 downto 0);
     Rc : out STD_LOGIC
   );
   end component;
@@ -114,6 +114,13 @@ begin
    o_pmodled       <=  d_opa & d_opb;         -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
    o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
 
+adder4 : Add4Bits port map (
+  A => d_opa,
+  B => d_opb,
+  C => d_cin,
+  R => d_sum,
+  Rc => d_cout
+);
 
 end BEHAVIORAL;
 
