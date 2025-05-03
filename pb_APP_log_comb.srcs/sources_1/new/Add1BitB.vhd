@@ -41,15 +41,14 @@ end Add1BitB;
 
 architecture Behavioral of Add1BitB is
 
-  signal buf: STD_LOGIC_VECTOR(2 downto 0);
-
 begin
 
 Adder: process(X, Y, Ci) is
+  variable buf: STD_LOGIC_VECTOR(2 downto 0);
 begin
-  buf(0) <= X;
-  buf(1) <= Y;
-  buf(2) <= Ci;
+  buf(0) := X;
+  buf(1) := Y;
+  buf(2) := Ci;
 
      case (buf) is
       when "000" =>

@@ -67,7 +67,7 @@ architecture Behavioral of Add4Bits is
 
 begin
 
-  first : Add1BitA port map (
+  first : Add1BitB port map (
     X  => A(0),
     Y  => B(0),
     Ci => C,
@@ -75,7 +75,7 @@ begin
     Co => bufA
   );
 
-  sec : Add1BitA port map (
+  sec : Add1BitB port map (
     X  => A(1),
     Y  => B(1),
     Ci => bufA,
@@ -83,7 +83,7 @@ begin
     Co => bufB
   );
 
-  third : Add1BitB port map (
+  third : Add1BitA port map (
     X  => A(2),
     Y  => B(2),
     Ci => bufB,
@@ -91,7 +91,7 @@ begin
     Co => bufC
   );
 
-  fourth : Add1BitB port map (
+  fourth : Add1BitA port map (
     X  => A(3),
     Y  => B(3),
     Ci => bufC,

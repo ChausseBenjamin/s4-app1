@@ -70,6 +70,21 @@ end COMPONENT;
    signal vecteur_test_sim   :  STD_LOGIC_VECTOR (13 DOWNTO 0) := (others => '0');
    signal resultat_attendu       :  STD_LOGIC_VECTOR (4 DOWNTO 0) := "00000";
 
+COMPONENT Add4Bits
+    PORT (
+        A  : in  STD_LOGIC_VECTOR(3 downto 0);
+        B  : in  STD_LOGIC_VECTOR(3 downto 0);
+        C  : in  STD_LOGIC;
+        R  : out STD_LOGIC_VECTOR(3 downto 0);
+        Rc : out STD_LOGIC
+    );
+END COMPONENT;
+    
+    signal add_a_sim  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+    signal add_b_sim  : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+    signal add_cin_sim : STD_LOGIC := '0';
+    signal add_result_sim : STD_LOGIC_VECTOR(3 downto 0);
+    signal add_cout_sim : STD_LOGIC;
 
    constant sysclk_Period  : time := 8 ns;
    
@@ -84,9 +99,13 @@ end COMPONENT;
   --  vecteur de test è modifier selon les besoins
   --  res      op_a     op_b    cin
     "00000" & "0000" & "0000" & '0',  --   0 +  0  
-    "00000" & "0000" & "0001" & '0',  --   0 +  1 
+    "00001" & "0000" & "0001" & '0',  --   0 +  1 
     -- modifez et/ou ajoutez vos valeurs
-  
+    "00001" & "0000" & "0000" & '1',  --   carry in
+    "01111" & "0000" & "1111" & '0',  --   0 +  F
+    "01111" & "1111" & "0000" & '0',  --   F +  0
+    
+    
     -- conserver la ligne ci-bas.
     others => "00000" & "0000" & "0000" & '0'  --  0 + 0 
     );
@@ -94,6 +113,14 @@ end COMPONENT;
 
 begin
 
+uut_add4bits: Add4Bits
+    PORT MAP (
+        A  => add_a_sim,
+        B  => add_b_sim,
+        C  => add_cin_sim,
+        R  => add_result_sim,
+        Rc => add_cout_sim
+    );
 
 -- Pattes du FPGA Zybo-Z7
 uut: AppCombi_top
@@ -140,12 +167,41 @@ uut: AppCombi_top
               btn_sim <= vecteur_test_sim (4 downto 1) ;
               cin_sim <= vecteur_test_sim (0);
 			  resultat_attendu <= vecteur_test_sim(13 downto 9);
+			  
+			  -- Assignation of variables to add4bit
+			  add_a_sim     <= vecteur_test_sim(8 downto 5);
+              add_b_sim     <= vecteur_test_sim(4 downto 1);
+              add_cin_sim   <= vecteur_test_sim(0);   
+			  
               wait for delai_sim;
-			  --assert (resultat_attendu /= (probe_adder_result) ) report "Resultat pas celui prévu." severity warning; 
+
+              -- Optional: Compare results
+              assert (resultat_attendu(3 downto 0) = add_result_sim)
+                report "Add4Bits: Somme incorrecte. Attendu = " &
+                    integer'image(to_integer(unsigned(resultat_attendu(3 downto 0)))) &
+                    ", Obtenu = " &
+                    integer'image(to_integer(unsigned(add_result_sim))) &
+                    ", A = " &
+                    integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
+                    ", B = " &
+                    integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
+                severity warning;
+
+              assert (resultat_attendu(4) = add_cout_sim)
+                report "Add4Bits: Retenue incorrecte. Attendu = '" &
+                    std_logic'image(resultat_attendu(4)) &
+                    "', Obtenu = '" &
+                    std_logic'image(add_cout_sim) & "'" &
+                    ", A = " &
+                    integer'image(to_integer(unsigned(add_a_sim(3 downto 0)))) &
+                    ", B = " &
+                    integer'image(to_integer(unsigned(add_b_sim(3 downto 0))))
+                severity warning;
+
               table_valeurs_adr := table_valeurs_adr + 1;
-			  if(table_valeurs_adr = 63) then
-				exit;
-			  end if;
+              if(table_valeurs_adr = 63) then
+                exit;
+              end if;
          end loop; 
            
          WAIT; -- will wait forever

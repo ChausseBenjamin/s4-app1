@@ -35,13 +35,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity Fct_2_3 is
     Port ( ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
-           A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
+           A2_3 : out STD_LOGIC_VECTOR (3 downto 0));
 end Fct_2_3;
 
 architecture Behavioral of Fct_2_3 is
     signal shifted_once : STD_LOGIC_VECTOR(3 downto 0);
     signal shifted_twice : STD_LOGIC_VECTOR(3 downto 0);
     signal shifted_thrice : STD_LOGIC_VECTOR(3 downto 0);
+    signal carry_out : STD_LOGIC;
     
     component Add4Bits is
     Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
@@ -52,16 +53,18 @@ architecture Behavioral of Fct_2_3 is
     end component;
 begin
     -- N x 2^-1 : shifted once
-    shifted_once <= '0' & ADCbin(3 downto 0);
+    shifted_once <= '0' & ADCbin(3 downto 1);
 
     -- N x 2^-3 : shifted thrice
-    shifted_twice <= '0' & shifted_once(3 downto 0);
-    shifted_thrice <= '0' & shifted_twice(3 downto 0);
+    shifted_twice <= '0' & shifted_once(3 downto 1);
+    shifted_thrice <= '0' & shifted_twice(3 downto 1);
     
     -- Both are then added to give the result of the 2/3 multiplication (0.625)
     result : Add4Bits port map (
-        X  => shifted_once,
-        Y  => shifted_thrice,
-        O => A2_3
+        A  => "0110",
+        B  => "0001",
+        C => '0',
+        R => A2_3,
+        Rc => carry_out
     );
 end Behavioral;
