@@ -272,5 +272,6 @@ pb_APP_log_comb.xpr
 #########
 *.cache/
 *.runs/
+!Readme.md
 # TEMPORARY: Avoid collab conflicts
 pb_APP_log_comb.xpr
