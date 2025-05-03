@@ -272,6 +272,12 @@ pb_APP_log_comb.xpr
 #########
 *.cache/
 *.runs/
+# Documentation
 !Readme.md
+# Report in LaTeX
+!*.sty
+!*.tex
+!*.png
+!*.jpg
 # TEMPORARY: Avoid collab conflicts
 pb_APP_log_comb.xpr
