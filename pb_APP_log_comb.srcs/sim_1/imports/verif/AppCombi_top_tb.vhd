@@ -39,7 +39,6 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;   --
 
 
 entity AppCombi_top_tb is
---  Port ( );
 end AppCombi_top_tb;
 
 architecture Behavioral of AppCombi_top_tb is
