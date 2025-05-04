@@ -14,6 +14,15 @@ UNISIM.files = [
 ]
 UNISIM.is_third_party = true
 
+IEEE.files = [
+  "/tools/ghdl/libraries/ieee2008/*.vhdl",
+  "/tools/ghdl/libraries/ieee/*.vhdl",
+  # "/tools/ghdl
+]
+IEEE.is_third_party = true
+
+
+
 [lint]
 unused = "error"
 unnecessary_work_library = false
