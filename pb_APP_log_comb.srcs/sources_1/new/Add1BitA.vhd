@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Company:
 -- Engineer:
 --
@@ -16,7 +16,7 @@
 -- Revision 0.01 - File Created
 -- Additional Comments:
 --
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 
 library IEEE;
@@ -31,19 +31,19 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Add1BitA is
-    Port ( X : in STD_LOGIC;
-           Y : in STD_LOGIC;
-           Ci : in STD_LOGIC;
-           O : out STD_LOGIC;
-           Co : out STD_LOGIC);
+entity Add1BitA is Port (
+  X  : in  STD_LOGIC;
+  Y  : in  STD_LOGIC;
+  Ci : in  STD_LOGIC;
+  O  : out STD_LOGIC;
+  Co : out STD_LOGIC);
 end Add1BitA;
 
 architecture Behavioral of Add1BitA is
 
 begin
 
-  O <= (X xor Y) xor Ci;
+  O  <= (X xor Y) xor Ci;
   Co <= ((X xor Y) and Ci) or (X and Y);
 
 end;
