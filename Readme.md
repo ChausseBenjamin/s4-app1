@@ -4,6 +4,9 @@
 - [x] Fct2_3
 - [x] Décodeur 3_8
 - [ ] Parité
+  - [ ] Allumer la DEL
+  - [x] Faire le module
+  - [x] Faire le Testbench
 - [ ] Bin2DualBCD
   - [x] Bin2DualBCD_NS
   - [ ] Moins_5

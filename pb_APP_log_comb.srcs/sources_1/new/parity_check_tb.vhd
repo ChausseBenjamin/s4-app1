@@ -82,7 +82,7 @@ architecture Behavioral of Parity_check_tb is
         "1100" & "0" & "1",
         "1101" & "1" & "0",
         "1110" & "1" & "0",
-        "1111" & "1" & "1",
+        "1111" & "0" & "1",
 
         -- DO NOT DELETE
         others => "0000" & "0" & "1"
