@@ -48,11 +48,11 @@ architecture BEHAVIORAL of AppCombi_top is
   signal d_opa       : std_logic_vector (3 downto 0):= "0000";   -- operande A
   signal d_opb       : std_logic_vector (3 downto 0):= "0000";   -- operande B
   signal d_cin       : std_logic := '0';             -- retenue entree
-  signal d_sum       : std_logic_vector (3 downto 0):= "0000";   -- somme
+  signal d_sum       : std_logic_vector (4 downto 0):= "00000";   -- somme
   signal d_cout      : std_logic := '0';             -- retenue sortie
   --
-  signal d_AFF0      : std_logic_vector (3 downto 0):= "0000";
-  signal d_AFF1      : std_logic_vector (3 downto 0):= "0000";
+  signal d_AFF0      : std_logic_vector (4 downto 0):= "00000";
+  signal d_AFF1      : std_logic_vector (4 downto 0):= "00000";
 
 
   component Add4Bits is Port (
@@ -74,8 +74,8 @@ architecture BEHAVIORAL of AppCombi_top is
 
   component septSegments_Top is Port (
     clk          : in   STD_LOGIC;                      -- horloge systeme, typique 100 MHz (preciser par le constante)
-    i_AFF0       : in   STD_LOGIC_VECTOR (3 downto 0);  -- donnee a afficher sur 8 bits : chiffre hexa position 1 et 0
-    i_AFF1       : in   STD_LOGIC_VECTOR (3 downto 0);  -- donnee a afficher sur 8 bits : chiffre hexa position 1 et 0
+    i_AFF0       : in   STD_LOGIC_VECTOR (4 downto 0);  -- donnee a afficher sur 8 bits : chiffre hexa position 1 et 0
+    i_AFF1       : in   STD_LOGIC_VECTOR (4 downto 0);  -- donnee a afficher sur 8 bits : chiffre hexa position 1 et 0
     o_AFFSSD_Sim : out string(1 to 2);
     o_AFFSSD     : out  STD_LOGIC_VECTOR (7 downto 0)
   );
@@ -109,12 +109,12 @@ begin
     A => d_opa,
     B => d_opb,
     C => d_cin,
-    R => d_sum,
+    R => d_sum(3 downto 0),
     Rc => d_cout
   );
-  
+
   led_test_btn <= i_btn(2 downto 0);
-  
+
   ledTest : Decodeur_3_8 port map (
     control_bits => led_test_btn,
     bus_out => o_pmodled
@@ -124,8 +124,8 @@ begin
   d_opb         <=  i_btn; -- operande B sur boutons
   d_cin         <=  '0';   -- la retenue d'entrée alterne 0 1 a 1 Hz
 
-  d_AFF0        <=  d_sum(3 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
-  d_AFF1        <=  '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
+  d_AFF0        <=  d_sum(4 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
+  d_AFF1        <=  '0' & '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
   o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
   --o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
   o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
