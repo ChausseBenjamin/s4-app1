@@ -46,7 +46,7 @@ architecture Behavioral of Parity_check_tb is
 
   signal input_bits_sim : STD_LOGIC_VECTOR (3 downto 0);
   signal input_cfg_sim  : STD_LOGIC;
-  signal bus_out_sim    : STD_LOGIC;
+  signal output_buffer  : STD_LOGIC;
   signal expected       : STD_LOGIC;
 
   ----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ architecture Behavioral of Parity_check_tb is
         "0100" & "1" & "0",
         "0101" & "0" & "1",
         "0110" & "0" & "1",
-        "0111" & "0" & "0",
+        "0111" & "1" & "0",
 
         "1000" & "1" & "0",
         "1001" & "0" & "1",
@@ -93,7 +93,7 @@ begin
   parity_checker: parity_check port map (
     ADCbin => input_bits_sim,
     S1     => input_cfg_sim,
-    Parite => expected);
+    Parite => output_buffer);
 
   -- Section banc de test
   ----------------------------------------
@@ -114,30 +114,35 @@ begin
     variable delai_sim : time  := 50 ns;
     variable table_valeurs_adr : integer range 0 to parity_test_count;
 
-  -------------------------------------------------
-  -- TEST EVEN PARITY (button pressed -> S1 = '1')
-  -------------------------------------------------
-  begin
+ begin
     table_valeurs_adr := 0;
+
+    -------------------------------------------------
+    -- TEST EVEN PARITY (button pressed -> S1 = '1')
+    -------------------------------------------------
     for index in 0 to   parity_test_values'length-1 loop
       vecteur_test_sim <= parity_test_values(table_valeurs_adr);
 
       ----------------------------------------
       -- Assignation des signals de tests aux valeurs fetched de la table.
       ----------------------------------------
-	    input_bits_sim <= vecteur_test_sim(3 downto 0);
+	    input_bits_sim <= vecteur_test_sim(5 downto 2);
       input_cfg_sim <= '1'; -- PRESSED BUTTON: TEST EVEN PARITY
-	    expected <= vecteur_test_sim(4);
+	    expected <= vecteur_test_sim(1);
 	    ----------------------------------------
       wait for delai_sim;
 
         -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
-        assert (expected = bus_out_sim)
-          report "Parity_check: Incorrect parity resolution = " &
-            STD_LOGIC'image(bus_out_sim) &
-            ", Expected = " &
-            STD_LOGIC'image(expected)
-            severity warning;
+        assert (expected = output_buffer)
+        report "Parity_check: Incorrect parity resolution = " &
+         STD_LOGIC'image(output_buffer) &
+         ", Expected = " & STD_LOGIC'image(expected) &
+         ", Input = [" &
+         STD_LOGIC'image(input_bits_sim(3))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(2))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(1))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(0))(2) &  "]"
+  severity warning;
 
 
             if(table_valeurs_adr = parity_test_count) then
@@ -145,6 +150,41 @@ begin
             end if;
             table_valeurs_adr := table_valeurs_adr + 1;
     end loop;
+
+    -------------------------------------------------
+    -- TEST UNEVEN PARITY (button pressed -> S1 = '0')
+    -------------------------------------------------
+    for index in 0 to   parity_test_values'length-1 loop
+      vecteur_test_sim <= parity_test_values(table_valeurs_adr);
+
+      ----------------------------------------
+      -- Assignation des signals de tests aux valeurs fetched de la table.
+      ----------------------------------------
+	    input_bits_sim <= vecteur_test_sim(5 downto 2);
+      input_cfg_sim <= '0'; -- UNPRESSED BUTTON: TEST UNEVEN PARITY
+	    expected <= vecteur_test_sim(0);
+	    ----------------------------------------
+      wait for delai_sim;
+
+        -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
+        assert (expected = output_buffer)
+        report "Parity_check: Incorrect parity resolution = " &
+         STD_LOGIC'image(output_buffer) &
+         ", Expected = " & STD_LOGIC'image(expected) &
+         ", Input = [" &
+         STD_LOGIC'image(input_bits_sim(3))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(2))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(1))(2) & "," &
+         STD_LOGIC'image(input_bits_sim(0))(2) &  "]"
+  severity warning;
+
+
+            if(table_valeurs_adr = parity_test_count) then
+                exit;
+            end if;
+            table_valeurs_adr := table_valeurs_adr + 1;
+    end loop;
+
     wait;
   end process;
 end Behavioral;

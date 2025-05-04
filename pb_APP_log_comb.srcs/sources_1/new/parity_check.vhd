@@ -53,9 +53,9 @@ begin
 
     case (S1) is
       when '0' =>
-         Parite <= Y(2);
-      when '1' =>
          Parite <= not Y(2);
+      when '1' =>
+         Parite <= Y(2);
       when others =>
          Parite <= '0';
    end case;
