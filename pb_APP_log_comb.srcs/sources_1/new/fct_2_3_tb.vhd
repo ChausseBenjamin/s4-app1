@@ -52,7 +52,7 @@ architecture Behavioral of fct_2_3_tb is
     ----------------------------------------------------------------------------
     constant sysclk_Period  : time := 8 ns;
     signal clk_sim          : STD_LOGIC := '0';
-    signal vecteur_test_sim : STD_LOGIC_VECTOR(6 downto 0);
+    signal vecteur_test_sim : STD_LOGIC_VECTOR(6 downto 0) := "0000000";
 
     ----------------------------------------------------------------------------
     -- declaration d'un tableau pour soumettre un vecteur de test  
