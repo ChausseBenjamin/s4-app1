@@ -5,7 +5,7 @@
 - [x] Décodeur 3_8
 - [ ] Parité
 - [ ] Bin2DualBCD
-  - [ ] Bin2DualBCD_NS
+  - [x] Bin2DualBCD_NS
   - [ ] Moins_5
   - [ ] Bin2DualBCD_S
 - [ ] Mux
