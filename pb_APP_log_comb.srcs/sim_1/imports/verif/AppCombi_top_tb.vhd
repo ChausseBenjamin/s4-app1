@@ -34,8 +34,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 -- requis pour enoncés de type mem_valeurs_tests(to_integer( unsigned(table_valeurs_adr(9 downto 6) )));
-use ieee.numeric_std.ALL;          --
-use IEEE.STD_LOGIC_UNSIGNED.ALL;   --
+use ieee.numeric_std.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 
 entity AppCombi_top_tb is
@@ -202,9 +202,9 @@ begin
            resultat_attendu <= vecteur_test_sim(13 downto 9);
 
            -- Assignation of variables to add4bit
-           add_a_sim     <= vecteur_test_sim(8 downto 5);
-           add_b_sim     <= vecteur_test_sim(4 downto 1);
-           add_cin_sim   <= vecteur_test_sim(0);
+           add_a_sim   <= vecteur_test_sim(8 downto 5);
+           add_b_sim   <= vecteur_test_sim(4 downto 1);
+           add_cin_sim <= vecteur_test_sim(0);
 
            wait for delai_sim;
 
