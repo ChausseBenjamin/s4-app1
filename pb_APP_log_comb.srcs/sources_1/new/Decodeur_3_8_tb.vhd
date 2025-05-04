@@ -53,7 +53,7 @@ architecture Behavioral of Decodeur_3_8_tb is
     ----------------------------------------------------------------------------
     constant sysclk_Period  : time := 8 ns;
     signal clk_sim          : STD_LOGIC := '0';
-    signal vecteur_test_sim : STD_LOGIC_VECTOR(10 downto 0);
+    signal vecteur_test_sim : STD_LOGIC_VECTOR(10 downto 0) := "0000000000";
 
     ----------------------------------------------------------------------------
     -- declaration d'un tableau pour soumettre un vecteur de test  
