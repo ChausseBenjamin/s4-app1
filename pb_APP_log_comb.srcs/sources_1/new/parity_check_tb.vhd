@@ -44,7 +44,7 @@ architecture Behavioral of Parity_check_tb is
     Parite : out STD_LOGIC);
   end component;
 
-  signal input_bits_sim : STD_LOGIC_VECTOR (2 downto 0);
+  signal input_bits_sim : STD_LOGIC_VECTOR (3 downto 0);
   signal input_cfg_sim  : STD_LOGIC;
   signal bus_out_sim    : STD_LOGIC;
   signal expected       : STD_LOGIC;
@@ -54,29 +54,38 @@ architecture Behavioral of Parity_check_tb is
   ----------------------------------------------------------------------------
   constant sysclk_Period    : time := 8 ns;
   signal   clk_sim          : STD_LOGIC := '0';
-  signal   vecteur_test_sim : STD_LOGIC_VECTOR(10 downto 0);
+  signal   vecteur_test_sim : STD_LOGIC_VECTOR(5 downto 0) := "000000" ;
 
   ----------------------------------------------------------------------------
   -- declaration d'un tableau pour soumettre un vecteur de test
   ----------------------------------------------------------------------------
-  constant parity_test_count: integer := 8;
-  type parity_test_table is array (integer range 0 to parity_test_count) of std_logic_vector(4 downto 0);
-      constant mem_test_values : parity_test_table := (
+  constant parity_test_count: integer := 16;
+  type parity_test_table is array (integer range 0 to parity_test_count) of STD_LOGIC_VECTOR(5 downto 0);
+      constant parity_test_values : parity_test_table := (
         -- IN defines the input data
         -- RHS is the bit that must be "appended" to make the 1-sum even/uneven
 
         -- IN   even  uneven
-        "000" & "0" & "1",
-        "001" & "1" & "0",
-        "010" & "1" & "0",
-        "011" & "0" & "1",
-        "100" & "1" & "0",
-        "101" & "0" & "1",
-        "110" & "0" & "1",
-        "111" & "0" & "0",
+        "0000" & "0" & "1",
+        "0001" & "1" & "0",
+        "0010" & "1" & "0",
+        "0011" & "0" & "1",
+        "0100" & "1" & "0",
+        "0101" & "0" & "1",
+        "0110" & "0" & "1",
+        "0111" & "0" & "0",
+
+        "1000" & "1" & "0",
+        "1001" & "0" & "1",
+        "1010" & "0" & "1",
+        "1011" & "1" & "0",
+        "1100" & "0" & "1",
+        "1101" & "1" & "0",
+        "1110" & "1" & "0",
+        "1111" & "1" & "1",
 
         -- DO NOT DELETE
-        others => "000" & "0" & "1"
+        others => "0000" & "0" & "1"
       );
 
 begin
@@ -110,15 +119,15 @@ begin
   -------------------------------------------------
   begin
     table_valeurs_adr := 0;
-    for index in 0 to   mem_test_values'length-1 loop
-      vecteur_test_sim <= mem_test_values(table_valeurs_adr);
+    for index in 0 to   parity_test_values'length-1 loop
+      vecteur_test_sim <= parity_test_values(table_valeurs_adr);
 
       ----------------------------------------
       -- Assignation des signals de tests aux valeurs fetched de la table.
       ----------------------------------------
-	    input_bits_sim <= vecteur_test_sim(2 downto 0);
+	    input_bits_sim <= vecteur_test_sim(3 downto 0);
       input_cfg_sim <= '1'; -- PRESSED BUTTON: TEST EVEN PARITY
-	    expected <= vecteur_test_sim(3);
+	    expected <= vecteur_test_sim(4);
 	    ----------------------------------------
       wait for delai_sim;
 
