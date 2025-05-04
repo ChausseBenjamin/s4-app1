@@ -12,6 +12,6 @@
   - [ ] Moins_5
   - [ ] Bin2DualBCD_S
 - [ ] Mux
-- [ ] septSegments_Top
+- [x] septSegments_Top
 - [ ] Diviseur d’horloge : synchro_module_v2
 - [ ] Module App_combi_top (top)
