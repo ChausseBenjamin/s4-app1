@@ -134,7 +134,7 @@ begin
 
         -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
         assert (expected = output_buffer)
-        report "Parity_check: Incorrect parity resolution = " &
+        report "Parity_check: Incorrect even parity resolution = " &
          STD_LOGIC'image(output_buffer) &
          ", Expected = " & STD_LOGIC'image(expected) &
          ", Input = [" &
@@ -168,7 +168,7 @@ begin
 
         -- Compare results. Des impression dans le terminal sont fait uniquement lors d'erreurs.
         assert (expected = output_buffer)
-        report "Parity_check: Incorrect parity resolution = " &
+        report "Parity_check: Incorrect uneven parity resolution = " &
          STD_LOGIC'image(output_buffer) &
          ", Expected = " & STD_LOGIC'image(expected) &
          ", Input = [" &
