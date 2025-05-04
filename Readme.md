@@ -1,8 +1,8 @@
 # Tâches à faire
 
 - [ ] Thermo2Bin
-- [ ] Fct2_3
-- [ ] Décodeur 3_8
+- [x] Fct2_3
+- [x] Décodeur 3_8
 - [ ] Parité
 - [ ] Bin2DualBCD
   - [ ] Bin2DualBCD_NS
