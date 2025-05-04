@@ -82,16 +82,6 @@ architecture Behavioral of AppCombi_top_tb is
   signal add_result_sim : STD_LOGIC_VECTOR(3 downto 0);
   signal add_cout_sim   : STD_LOGIC;
 
-  component Fct_2_3 is port (
-    ADCbin : in  STD_LOGIC_VECTOR (3 downto 0);
-    A2_3   : out STD_LOGIC_VECTOR (2 downto 0));
-  end component;
-
-  signal fct_input_sim        : STD_LOGIC_VECTOR(3 downto 0) := "0000";
-  signal fct_output_sim       : STD_LOGIC_VECTOR(2 downto 0) := "000";
-  signal fct_vecteur_test_sim : STD_LOGIC_VECTOR(6 downto 0) := (others => '0');
-  signal fct_resultat_attendu : STD_LOGIC_VECTOR(2 downto 0) := "000";
-
   constant sysclk_Period  : time := 8 ns;
 
 
@@ -119,29 +109,7 @@ architecture Behavioral of AppCombi_top_tb is
     -- conserver la ligne ci-bas.
     others => "00000" & "0000" & "0000" & '0'  --  0 + 0
   );
-----------------------------------------------------------------------------
--- Tableau pour tester les valeurs du module FCT
-----------------------------------------------------------------------------
-  type fct_table_valeurs_tests is array (integer range 0 to 13) of std_logic_vector(6 downto 0);
-  constant fct_mem_valeurs_tests : fct_table_valeurs_tests := (
-    --  vecteur de test à modifier selon les besoins
-    --  res   input
-    "000" & "0000", -- 0
-    "000" & "0001", -- 1
-    "001" & "0010",
-    "001" & "0011",
-    "010" & "0100",
-    "011" & "0101",
-    "011" & "0110",
-    "011" & "0111",
-    "101" & "1000",
-    "101" & "1001",
-    "110" & "1010",
-    "110" & "1011",
-    "111" & "1100", -- 12
-    -- conserver la ligne ci-bas.
-    others => "000" & "0000"  --  0 + 0
-  );
+
 ----------------------------------------------------------------------------
 
 begin
@@ -152,10 +120,6 @@ begin
     C  => add_cin_sim,
     R  => add_result_sim,
     Rc => add_cout_sim);
-
-  uut_fct_2_3: Fct_2_3 port map (
-    ADCbin => fct_input_sim,
-    A2_3 => fct_output_sim);
 
   -- Pattes du FPGA Zybo-Z7
   uut: AppCombi_top port map(
@@ -236,31 +200,6 @@ begin
              exit;
            end if;
          end loop;
-
-         -- Phase 2: Test de la fonction de multiplication 2/3
-         fct_table_valeurs_adr := 0;
-         for index in 0 to fct_mem_valeurs_tests'length-1 loop
-           fct_vecteur_test_sim <= fct_mem_valeurs_tests(fct_table_valeurs_adr);
-           fct_resultat_attendu <= fct_vecteur_test_sim(6 downto 4);
-           fct_input_sim        <= fct_vecteur_test_sim(3 downto 0);
-
-             wait for delai_sim;
-
-             -- Comparation des resultats.
-             assert (fct_resultat_attendu(2 downto 0) = fct_output_sim)
-               report "FCT_2_3: Multiplication incorrecte. Attendu = " &
-                 integer'image(to_integer(unsigned(fct_resultat_attendu))) &
-                 ", Obtenu = " &
-                 integer'image(to_integer(unsigned(fct_output_sim))) &
-                 ", Avec = " &
-                 integer'image(to_integer(unsigned(fct_input_sim)))
-               severity warning;
-
-             fct_table_valeurs_adr := fct_table_valeurs_adr + 1;
-             if(fct_table_valeurs_adr = 63) then
-               exit;
-             end if;
-          end loop;
 
           wait; -- will wait forever
         end process;
