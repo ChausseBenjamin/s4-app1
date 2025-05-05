@@ -53,12 +53,6 @@ architecture Behavioral of Mux is
 
   signal break : BOOLEAN := FALSE;
 
-  signal unit_input_buf  : STD_LOGIC_VECTOR(3 downto 0);
-  signal tens_input_buf  : STD_LOGIC_VECTOR(3 downto 0);
-
-  signal unit_sim_sink : string(1 to 1);
-  signal tens_sim_sink : string(1 to 1);
-
 begin
 
   decide : process(ADCBin, Dizaines, Unites_ns, BTN, erreur, S2, Code_signe, Unite_s)
@@ -66,31 +60,31 @@ begin
       -- HANDLE SWITCH {{{
       if ( (S2 = pressed) or (erreur = '1')) then
         break <= TRUE; -- Avoids double printing on 7seg
-        tens_input_buf <= char_E;
-        unit_input_buf <= char_r;
+        DAFF1 <= char_E;
+        DAFF0 <= char_r;
       end if;
       -- }}}
       -- HANDLE BUTTONS {{{
       if break = FALSE then
         case (BTN) is
           when "00" =>
-             unit_input_buf <= Unites_ns;
-             tens_input_buf <= Dizaines;
+             DAFF0 <= Unites_ns;
+             DAFF1 <= Dizaines;
           when "01" =>
             -- impossible de buster "C" en hex
             -- encore moins avoir une deuxième décimale
             -- on mets donc les "Dizaines" à zéro
-            unit_input_buf <= ADCbin;
-            tens_input_buf <= "0000";
+            DAFF0 <= ADCbin;
+            DAFF1 <= "0000";
           when "10" =>
-            unit_input_buf <= Unite_s;
-            tens_input_buf <= Code_signe;
+            DAFF0 <= Unite_s;
+            DAFF1 <= Code_signe;
           when "11" =>
-            tens_input_buf <= char_E;
-            unit_input_buf <= char_r;
+            DAFF1 <= char_E;
+            DAFF0 <= char_r;
           when others =>
-            tens_input_buf <= char_E;
-            unit_input_buf <= char_r;
+            DAFF1 <= char_E;
+            DAFF0 <= char_r;
        end case;
       end if;
       -- }}}

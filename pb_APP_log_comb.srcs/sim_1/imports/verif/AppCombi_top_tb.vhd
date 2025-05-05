@@ -94,7 +94,22 @@ architecture Behavioral of AppCombi_top_tb is
 
   constant sysclk_Period  : time := 8 ns;
 
-
+  constant char_0   : std_logic_vector(3 downto 0) := "0000";
+  constant char_1   : std_logic_vector(3 downto 0) := "0001";
+  constant char_2   : std_logic_vector(3 downto 0) := "0010";
+  constant char_3   : std_logic_vector(3 downto 0) := "0011";
+  constant char_4   : std_logic_vector(3 downto 0) := "0100";
+  constant char_5   : std_logic_vector(3 downto 0) := "0101";
+  constant char_6   : std_logic_vector(3 downto 0) := "0110";
+  constant char_7   : std_logic_vector(3 downto 0) := "0111";
+  constant char_8   : std_logic_vector(3 downto 0) := "0000";
+  constant char_9   : std_logic_vector(3 downto 0) := "0000";
+  constant char_a   : std_logic_vector(3 downto 0) := "0000";
+  constant char_b   : std_logic_vector(3 downto 0) := "0000";
+  constant char_c   : std_logic_vector(3 downto 0) := "0000";
+  constant char_neg : std_logic_vector(3 downto 0) := "0000";
+  constant char_e   : std_logic_vector(3 downto 0) := "0000";
+  constant char_r   : std_logic_vector(3 downto 0) := "0000";
 
   ----------------------------------------------------------------------------
   -- declaration d'un tableau pour soumettre un vecteur de test
