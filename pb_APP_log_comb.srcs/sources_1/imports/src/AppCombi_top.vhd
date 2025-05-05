@@ -33,7 +33,7 @@ entity AppCombi_top is port (
   o_led     : out std_logic_vector (3 downto 0); -- vers DELs de la carte Zybo
   o_led6_r  : out std_logic;           -- vers DEL rouge de la carte Zybo
   o_pmodled : out std_logic_vector (7 downto 0);  -- vers connecteur pmod 8 DELs
-  ADCth     : out std_logic_vector (11 downto 0)     -- Connecteur ADCth thermometrique
+  ADCth     : in std_logic_vector (11 downto 0)     -- Connecteur ADCth thermometrique
 );
 end AppCombi_top;
 
