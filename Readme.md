@@ -9,8 +9,8 @@
   - [x] Faire le Testbench
 - [ ] Bin2DualBCD
   - [x] Bin2DualBCD_NS
-  - [ ] Moins_5
-  - [ ] Bin2DualBCD_S
+  - [x] Moins_5
+  - [x] Bin2DualBCD_S
 - [ ] Mux
 - [x] septSegments_Top
 - [ ] Diviseur d’horloge : synchro_module_v2
