@@ -93,8 +93,8 @@ begin
                 units_out <= "0101";
                 dizaines_out <= "0001";
             when others =>
-                units_out <= "0000";
-                dizaines_out <= "0000";
+                units_out <= "1111";
+                dizaines_out <= "1110";
         end case;
     end process;
 
