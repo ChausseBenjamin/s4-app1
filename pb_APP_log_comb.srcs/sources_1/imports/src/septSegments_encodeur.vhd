@@ -102,7 +102,7 @@ begin
       when "1100" => s_Seg <= "0111001";  -- C
       when "1101" => s_Seg <= "1000000";  -- neg. (-)
       when "1110" => s_Seg <= "1111001";  -- E
-      when "1111" => s_Seg <= "0001100";  -- r (for "Er")
+      when "1111" => s_Seg <= "1010000";  -- r (for "Er")
       when others  => s_Seg <= "0001000"; -- undefined ("_")
     end case;
   end process;
