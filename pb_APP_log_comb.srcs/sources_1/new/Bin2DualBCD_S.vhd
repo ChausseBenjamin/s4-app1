@@ -41,9 +41,9 @@ architecture Behavioral of Bin2DualBCD_S is
 
 begin
 
-    process (signed_in(0))
+    process (signed_in(3))
         begin
-            case (signed_in(0)) is
+            case (signed_in(3)) is
                 when '0' =>
                     signed_code <= "0000";
                 when '1' =>
@@ -70,7 +70,7 @@ begin
             when "101" =>
                 signed_units <= "0101";
             when "110" =>
-                signed_units <= "0101";
+                signed_units <= "0110";
             when "111" =>
                 signed_units <= "0111";
             when others =>
