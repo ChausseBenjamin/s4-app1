@@ -49,54 +49,54 @@ set_property -dict { PACKAGE_PIN V16   IOSTANDARD LVCMOS33 } [get_ports { o_led6
 
 
 ##Pmod Header JA (Circuit_Thermo_Bin, labo_adder4b: branchement: PmodSSD)
-set_property -dict { PACKAGE_PIN N15   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[0] }]; #IO_L21P_T3_DQS_AD14P_35 Sch=JA1_R_p		#  pmod haut   
-set_property -dict { PACKAGE_PIN L14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[1] }]; #IO_L22P_T3_AD7P_35 Sch=JA2_R_P          #  pmod haut   
-set_property -dict { PACKAGE_PIN K16   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[2] }]; #IO_L24P_T3_AD15P_35 Sch=JA3_R_P         #  pmod haut    
-set_property -dict { PACKAGE_PIN K14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[3] }]; #IO_L20P_T3_AD6P_35 Sch=JA4_R_P          #  pmod haut   
-set_property -dict { PACKAGE_PIN N16   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[4] }]; #IO_L21N_T3_DQS_AD14N_35 Sch=JA1_R_N    #  pmod bas  
-set_property -dict { PACKAGE_PIN L15   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[5] }]; #IO_L22N_T3_AD7N_35 Sch=JA2_R_N         #  pmod bas  
+set_property -dict { PACKAGE_PIN N15   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[0] }]; #IO_L21P_T3_DQS_AD14P_35 Sch=JA1_R_p		#  pmod haut
+set_property -dict { PACKAGE_PIN L14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[1] }]; #IO_L22P_T3_AD7P_35 Sch=JA2_R_P          #  pmod haut
+set_property -dict { PACKAGE_PIN K16   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[2] }]; #IO_L24P_T3_AD15P_35 Sch=JA3_R_P         #  pmod haut
+set_property -dict { PACKAGE_PIN K14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[3] }]; #IO_L20P_T3_AD6P_35 Sch=JA4_R_P          #  pmod haut
+set_property -dict { PACKAGE_PIN N16   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[4] }]; #IO_L21N_T3_DQS_AD14N_35 Sch=JA1_R_N    #  pmod bas
+set_property -dict { PACKAGE_PIN L15   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[5] }]; #IO_L22N_T3_AD7N_35 Sch=JA2_R_N         #  pmod bas
 set_property -dict { PACKAGE_PIN J16   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[6] }]; #IO_L24N_T3_AD15N_35 Sch=JA3_R_N        #  pmod bas
-set_property -dict { PACKAGE_PIN J14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[7] }]; #IO_L20N_T3_AD6N_35 Sch=JA4_R_N         #  pmod bas 
+set_property -dict { PACKAGE_PIN J14   IOSTANDARD LVCMOS33 } [get_ports { o_SSD[7] }]; #IO_L20N_T3_AD6N_35 Sch=JA4_R_N         #  pmod bas
 
 ##Pmod Header JC  (Circuit_Thermo_Bin, circuit_labo_adder_4b: branchement : Pmod8LD)
-set_property -dict { PACKAGE_PIN V15   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[0] }]; #IO_L10P_T1_34 Sch=jc_p[1]     #  pmod haut		 
-set_property -dict { PACKAGE_PIN W15   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[1] }]; #IO_L10N_T1_34 Sch=jc_n[1]     #  pmod haut	     
+set_property -dict { PACKAGE_PIN V15   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[0] }]; #IO_L10P_T1_34 Sch=jc_p[1]     #  pmod haut
+set_property -dict { PACKAGE_PIN W15   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[1] }]; #IO_L10N_T1_34 Sch=jc_n[1]     #  pmod haut
 set_property -dict { PACKAGE_PIN T11   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[2] }]; #IO_L1P_T0_34 Sch=jc_p[2]      #  pmod haut
-set_property -dict { PACKAGE_PIN T10   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[3] }]; #IO_L1N_T0_34 Sch=jc_n[2]      #  pmod haut   
-set_property -dict { PACKAGE_PIN W14   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[4] }]; #IO_L8P_T1_34 Sch=jc_p[3]      # pmod bas        
-set_property -dict { PACKAGE_PIN Y14   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[5] }]; #IO_L8N_T1_34 Sch=jc_n[3]      # pmod bas       
-set_property -dict { PACKAGE_PIN T12   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[6] }]; #IO_L2P_T0_34 Sch=jc_p[4]      # pmod bas        
+set_property -dict { PACKAGE_PIN T10   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[3] }]; #IO_L1N_T0_34 Sch=jc_n[2]      #  pmod haut
+set_property -dict { PACKAGE_PIN W14   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[4] }]; #IO_L8P_T1_34 Sch=jc_p[3]      # pmod bas
+set_property -dict { PACKAGE_PIN Y14   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[5] }]; #IO_L8N_T1_34 Sch=jc_n[3]      # pmod bas
+set_property -dict { PACKAGE_PIN T12   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[6] }]; #IO_L2P_T0_34 Sch=jc_p[4]      # pmod bas
 set_property -dict { PACKAGE_PIN U12   IOSTANDARD LVCMOS33     } [get_ports { o_pmodled[7] }]; #IO_L2N_T0_34 Sch=jc_n[4]      # pmod bas
- 
+
 
 
 ## Section partiellement préconfigurée - problématique
 #  Note: Vous devez renommer le nom du port pour correspondre à votre projet.
 #        Il faut également retirer les "#" au début des lignes "set_property"
 #        pour activer ces liaisons physique
- 
-##Pmod Header JD     (Circuit_Thermo_Bin)                                                                                                              
-set_property -dict { PACKAGE_PIN T14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[0] }]; #IO_L5P_T0_34 Sch=jd_p[1]                  
-set_property -dict { PACKAGE_PIN T15   IOSTANDARD LVCMOS33     } [get_ports { ADCth[1] }]; #IO_L5N_T0_34 Sch=jd_n[1]				 
-set_property -dict { PACKAGE_PIN P14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[2] }]; #IO_L6P_T0_34 Sch=jd_p[2]                  
-set_property -dict { PACKAGE_PIN R14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[3] }]; #IO_L6N_T0_VREF_34 Sch=jd_n[2]             
-set_property -dict { PACKAGE_PIN U14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[4] }]; #IO_L11P_T1_SRCC_34 Sch=jd_p[3]            
-set_property -dict { PACKAGE_PIN U15   IOSTANDARD LVCMOS33     } [get_ports { ADCth[5] }]; #IO_L11N_T1_SRCC_34 Sch=jd_n[3]            
-set_property -dict { PACKAGE_PIN V17   IOSTANDARD LVCMOS33     } [get_ports { ADCth[6] }]; #IO_L21P_T3_DQS_34 Sch=jd_p[4]             
-set_property -dict { PACKAGE_PIN V18   IOSTANDARD LVCMOS33     } [get_ports { ADCth[7] }]; #IO_L21N_T3_DQS_34 Sch=jd_n[4]             
-                                                                                                                              
-##Pmod Header JE   (Circuit_Thermo_Bin)                                                                                                                
-set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { ADCth[8]}];   #IO_L4P_T0_34 Sch=je[1]			 
-set_property -dict { PACKAGE_PIN W16   IOSTANDARD LVCMOS33 } [get_ports { ADCth[9]}];   #IO_L18N_T2_34 Sch=je[2]            
-set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { ADCth[10] }]; #IO_25_35 Sch=je[3]  
-set_property -dict { PACKAGE_PIN H15   IOSTANDARD LVCMOS33 } [get_ports { ADCth[11] }]; #IO_L19P_T3_35 Sch=je[4]                    
-set_property -dict { PACKAGE_PIN V13   IOSTANDARD LVCMOS33 } [get_ports { DEL2 }];        #IO_L3N_T0_DQS_34 Sch=je[7]                  
-set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports { DEL3 }];        #IO_L9N_T1_DQS_34 Sch=je[8]                  
-set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports { button_s1 }];       #IO_L20P_T3_34 Sch=je[9]            
-set_property -dict { PACKAGE_PIN Y17   IOSTANDARD LVCMOS33 } [get_ports { button_s2 }];       #IO_L7N_T1_34 Sch=je[10]
+
+##Pmod Header JD     (Circuit_Thermo_Bin)
+set_property -dict { PACKAGE_PIN T14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[0] }]; #IO_L5P_T0_34 Sch=jd_p[1]
+set_property -dict { PACKAGE_PIN T15   IOSTANDARD LVCMOS33     } [get_ports { ADCth[1] }]; #IO_L5N_T0_34 Sch=jd_n[1]
+set_property -dict { PACKAGE_PIN P14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[2] }]; #IO_L6P_T0_34 Sch=jd_p[2]
+set_property -dict { PACKAGE_PIN R14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[3] }]; #IO_L6N_T0_VREF_34 Sch=jd_n[2]
+set_property -dict { PACKAGE_PIN U14   IOSTANDARD LVCMOS33     } [get_ports { ADCth[4] }]; #IO_L11P_T1_SRCC_34 Sch=jd_p[3]
+set_property -dict { PACKAGE_PIN U15   IOSTANDARD LVCMOS33     } [get_ports { ADCth[5] }]; #IO_L11N_T1_SRCC_34 Sch=jd_n[3]
+set_property -dict { PACKAGE_PIN V17   IOSTANDARD LVCMOS33     } [get_ports { ADCth[6] }]; #IO_L21P_T3_DQS_34 Sch=jd_p[4]
+set_property -dict { PACKAGE_PIN V18   IOSTANDARD LVCMOS33     } [get_ports { ADCth[7] }]; #IO_L21N_T3_DQS_34 Sch=jd_n[4]
+
+##Pmod Header JE   (Circuit_Thermo_Bin)
+set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { ADCth[8]}];   #IO_L4P_T0_34 Sch=je[1]
+set_property -dict { PACKAGE_PIN W16   IOSTANDARD LVCMOS33 } [get_ports { ADCth[9]}];   #IO_L18N_T2_34 Sch=je[2]
+set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { ADCth[10] }]; #IO_25_35 Sch=je[3]
+set_property -dict { PACKAGE_PIN H15   IOSTANDARD LVCMOS33 } [get_ports { ADCth[11] }]; #IO_L19P_T3_35 Sch=je[4]
+set_property -dict { PACKAGE_PIN V13   IOSTANDARD LVCMOS33 } [get_ports { DEL2 }];        #IO_L3N_T0_DQS_34 Sch=je[7]
+set_property -dict { PACKAGE_PIN U17   IOSTANDARD LVCMOS33 } [get_ports { DEL3 }];        #IO_L9N_T1_DQS_34 Sch=je[8]
+set_property -dict { PACKAGE_PIN T17   IOSTANDARD LVCMOS33 } [get_ports { S1 }];       #IO_L20P_T3_34 Sch=je[9]
+set_property -dict { PACKAGE_PIN Y17   IOSTANDARD LVCMOS33 } [get_ports { S2 }];       #IO_L7N_T1_34 Sch=je[10]
 
 
 
- 
+
 
 

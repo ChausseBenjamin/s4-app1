@@ -36,14 +36,14 @@ entity AppCombi_top is port (
   ADCth     : in std_logic_vector (11 downto 0);     -- Connecteur ADCth thermometrique
   DEL2      : out std_logic;                         -- Carte thermometrique
   DEL3      : out std_logic;                         -- Carte thermometrique
-  button_s1 : in std_logic;                          -- Carte thermometrique
-  button_s2 : in std_logic                           -- Carte thermometrique
+  S1 : in std_logic;                          -- Carte thermometrique
+  S2 : in std_logic                           -- Carte thermometrique
 );
 end AppCombi_top;
 
 architecture BEHAVIORAL of AppCombi_top is
 
-  constant nbreboutons   : integer := 4;  -- Carte Zybo Z7
+  constant button_count   : integer := 4;  -- Carte Zybo Z7
   constant freq_sys_MHz  : integer := 125;  -- 125 MHz
 
   signal d_s_1Hz       : std_logic;
@@ -66,13 +66,13 @@ architecture BEHAVIORAL of AppCombi_top is
   --
   signal parite_out  : std_logic := '0';
 
-  component parity_check is Port ( 
+  component parity_check is Port (
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     S1 : in STD_LOGIC;
     Parite : out STD_LOGIC);
   end component;
 
-  component Fct_2_3 is Port ( 
+  component Fct_2_3 is Port (
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
   end component;
@@ -82,7 +82,7 @@ architecture BEHAVIORAL of AppCombi_top is
     bus_out : out STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
-  component Thermo2Bin is Port ( 
+  component Thermo2Bin is Port (
     thermo_bus : in STD_LOGIC_VECTOR (11 downto 0);
     binary_out : out STD_LOGIC_VECTOR (3 downto 0);
     error : out STD_LOGIC);
@@ -140,7 +140,7 @@ begin
     binary_out => ADCbin,
     error => error
   );
-  
+
   ----------------------------------------
   -- PMOD DELs
   ----------------------------------------
@@ -148,25 +148,25 @@ begin
     ADCbin => ADCbin,
     A2_3 => A2_3
   );
-  
+
   to_pmod : Decodeur_3_8 port map (
     control_bits => A2_3,
     bus_out => o_pmodled
   );
-  
+
   ----------------------------------------
   -- Parite
   ----------------------------------------
   parity : parity_check port map (
     ADCbin => ADCbin,
-    S1 => button_s1,
-    Parite => parite_out 
+    S1 => S1,
+    Parite => parite_out
   );
-  
+
   DEL2 <= parite_out;
   o_led(0) <= parite_out;
-  
-  
+
+
   adder4 : Add4Bits port map (
     A => d_opa,
     B => d_opb,
