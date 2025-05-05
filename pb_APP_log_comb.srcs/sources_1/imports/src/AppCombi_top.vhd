@@ -222,15 +222,15 @@ begin
   );
   
   -- Vas dans le MUX.
-  led_test_btn <= i_btn(2 downto 0);
+  --led_test_btn <= i_btn(2 downto 0);
 
-  d_opa         <=  i_sw;  -- operande A sur interrupteurs
-  d_opb         <=  i_btn; -- operande B sur boutons
-  d_cin         <=  '0';   -- la retenue d'entrée alterne 0 1 a 1 Hz
+  --d_opa         <=  i_sw;  -- operande A sur interrupteurs
+  --d_opb         <=  i_btn; -- operande B sur boutons
+  --d_cin         <=  '0';   -- la retenue d'entrée alterne 0 1 a 1 Hz
 
   --d_AFF0        <=  ADCth(11 downto 7);--d_sum(4 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
   --d_AFF1        <=  ADCth(6 downto 2); --'0' & '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
-  o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
+  --o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
   --o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
   --o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
 
