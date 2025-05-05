@@ -36,14 +36,14 @@ entity AppCombi_top is port (
   ADCth     : in std_logic_vector (11 downto 0);     -- Connecteur ADCth thermometrique
   DEL2      : out std_logic;                         -- Carte thermometrique
   DEL3      : out std_logic;                         -- Carte thermometrique
-  S1 : in std_logic;                          -- Carte thermometrique
-  S2 : in std_logic                           -- Carte thermometrique
+  S1        : in std_logic;                          -- Carte thermometrique
+  S2        : in std_logic                           -- Carte thermometrique
 );
 end AppCombi_top;
 
 architecture BEHAVIORAL of AppCombi_top is
 
-  constant button_count   : integer := 4;  -- Carte Zybo Z7
+  constant nbreboutons   : integer := 4;  -- Carte Zybo Z7
   constant freq_sys_MHz  : integer := 125;  -- 125 MHz
 
   signal d_s_1Hz       : std_logic;
@@ -65,14 +65,27 @@ architecture BEHAVIORAL of AppCombi_top is
   signal A2_3        : std_logic_vector (2 downto 0) := "000";
   --
   signal parite_out  : std_logic := '0';
+  --
+  signal Dizaines    : std_logic_vector (3 downto 0) := "0000";
+  signal Unite_ns     : std_logic_vector (3 downto 0) := "0000";
+  signal Code_signe  : std_logic_vector (3 downto 0) := "0000";
+  signal Unite_s      : std_logic_vector (3 downto 0) := "0000";
 
-  component parity_check is Port (
+  component Bin2DualBCD is Port ( 
+    ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
+    Dizaines : out STD_LOGIC_VECTOR (3 downto 0);
+    Unite_ns : out STD_LOGIC_VECTOR (3 downto 0);
+    Code_signe : out STD_LOGIC_VECTOR (3 downto 0);
+    Unite_s : out STD_LOGIC_VECTOR (3 downto 0));
+  end component;
+
+  component parity_check is Port ( 
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     S1 : in STD_LOGIC;
     Parite : out STD_LOGIC);
   end component;
 
-  component Fct_2_3 is Port (
+  component Fct_2_3 is Port ( 
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
   end component;
@@ -82,7 +95,7 @@ architecture BEHAVIORAL of AppCombi_top is
     bus_out : out STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
-  component Thermo2Bin is Port (
+  component Thermo2Bin is Port ( 
     thermo_bus : in STD_LOGIC_VECTOR (11 downto 0);
     binary_out : out STD_LOGIC_VECTOR (3 downto 0);
     error : out STD_LOGIC);
@@ -113,24 +126,33 @@ architecture BEHAVIORAL of AppCombi_top is
     o_AFFSSD     : out  STD_LOGIC_VECTOR (7 downto 0)
   );
   end component;
+  
+  component Mux is port (
+    ADCbin     : in  STD_LOGIC_VECTOR (3 downto 0);
+    Dizaines   : in  STD_LOGIC_VECTOR (3 downto 0);
+    Unites_ns  : in  STD_LOGIC_VECTOR (3 downto 0);
+    Code_signe : in  STD_LOGIC_VECTOR (3 downto 0);
+    Unite_s    : in  STD_LOGIC_VECTOR (3 downto 0);
+    BTN        : in  STD_LOGIC_VECTOR (1 downto 0);
+    erreur     : in  STD_LOGIC;
+    S2         : in  STD_LOGIC;
+    DAFF0      : out STD_LOGIC_VECTOR (3 downto 0);
+    DAFF1      : out STD_LOGIC_VECTOR (3 downto 0));
+  end component;
 
 begin
 
+  ----------------------------------------
+  -- Module Synchro
+  ----------------------------------------
   inst_synch : synchro_module_v2
   generic map (const_CLK_syst_MHz => freq_sys_MHz) port map (
     clkm     => sysclk,
     o_CLK_5MHz   => clk_5MHz,
     o_S_1Hz    => d_S_1Hz
   );
-
-  inst_aff :  septSegments_Top port map (
-    clk  => clk_5MHz,
-    -- donnee a afficher definies sur 8 bits : chiffre hexa position 1 et 0
-    i_AFF1  => d_AFF1,
-    i_AFF0  => d_AFF0,
-    o_AFFSSD_Sim   => open, -- ne pas modifier le "open". Ligne pour simulations seulement.
-    o_AFFSSD     => o_SSD   -- sorties directement adaptees au connecteur PmodSSD
-  );
+  
+  DEL3 <= d_S_1Hz;
 
   ----------------------------------------
   -- Thermo2Bin converts to ADCbin
@@ -140,7 +162,7 @@ begin
     binary_out => ADCbin,
     error => error
   );
-
+  
   ----------------------------------------
   -- PMOD DELs
   ----------------------------------------
@@ -148,33 +170,58 @@ begin
     ADCbin => ADCbin,
     A2_3 => A2_3
   );
-
+  
   to_pmod : Decodeur_3_8 port map (
     control_bits => A2_3,
     bus_out => o_pmodled
   );
-
+  
   ----------------------------------------
   -- Parite
   ----------------------------------------
   parity : parity_check port map (
     ADCbin => ADCbin,
     S1 => S1,
-    Parite => parite_out
+    Parite => parite_out 
   );
-
-  DEL2 <= parite_out;
+  
+  DEL2 <= parite_out; -- marche pas encore
   o_led(0) <= parite_out;
-
-
-  adder4 : Add4Bits port map (
-    A => d_opa,
-    B => d_opb,
-    C => d_cin,
-    R => d_sum(3 downto 0),
-    Rc => d_cout
+  
+  ----------------------------------------
+  -- Afficheur 7 segments
+  ----------------------------------------
+  manageBCD : Bin2DualBCD port map (
+    ADCBin => ADCBin,
+    Dizaines => Dizaines,
+    Unite_ns => Unite_ns,
+    Code_signe => Code_signe,
+    Unite_s => Unite_s
   );
-
+  
+  mux_avant_7_segments :  Mux port map (
+    ADCbin     => ADCBin,
+    Dizaines   => Dizaines,
+    Unites_ns  => Unite_ns,
+    Code_signe => Code_signe,
+    Unite_s    => Unite_s,
+    BTN        => i_btn(1 downto 0),
+    erreur     => error,
+    S2         => S2,
+    DAFF0      => d_AFF0,
+    DAFF1      => d_AFF1
+  );
+  
+  inst_aff :  septSegments_Top port map (
+    clk  => clk_5MHz,
+    -- donnee a afficher definies sur 8 bits : chiffre hexa position 1 et 0
+    i_AFF1  => d_AFF1,
+    i_AFF0  => d_AFF0,
+    o_AFFSSD_Sim   => open, -- ne pas modifier le "open". Ligne pour simulations seulement.
+    o_AFFSSD     => o_SSD   -- sorties directement adaptees au connecteur PmodSSD
+  );
+  
+  -- Vas dans le MUX.
   led_test_btn <= i_btn(2 downto 0);
 
   d_opa         <=  i_sw;  -- operande A sur interrupteurs

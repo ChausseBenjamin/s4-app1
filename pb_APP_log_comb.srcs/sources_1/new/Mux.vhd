@@ -37,7 +37,7 @@ entity Mux is port (
     Unites_ns  : in  STD_LOGIC_VECTOR (3 downto 0);
     Code_signe : in  STD_LOGIC_VECTOR (3 downto 0);
     Unite_s    : in  STD_LOGIC_VECTOR (3 downto 0);
-    BTN        : in  STD_LOGIC_VECTOR (2 downto 0);
+    BTN        : in  STD_LOGIC_VECTOR (1 downto 0);
     erreur     : in  STD_LOGIC;
     S2         : in  STD_LOGIC;
     DAFF0      : out STD_LOGIC_VECTOR (3 downto 0);
@@ -53,29 +53,13 @@ architecture Behavioral of Mux is
 
   signal break : BOOLEAN := FALSE;
 
-  signal unit_input_buf  : STD_LOGIC_VECTOR(4 downto 0);
-  signal tens_input_buf  : STD_LOGIC_VECTOR(4 downto 0);
+  signal unit_input_buf  : STD_LOGIC_VECTOR(3 downto 0);
+  signal tens_input_buf  : STD_LOGIC_VECTOR(3 downto 0);
 
   signal unit_sim_sink : string(1 to 1);
   signal tens_sim_sink : string(1 to 1);
 
-  component septSegments_encodeur is Port(
-    i_AFF : in  STD_LOGIC_VECTOR(3 downto 0);  -- caractère à afficher
-    o_Seg : out STD_LOGIC_VECTOR(6 downto 0);  -- encodage 7-segments
-    o_CharacterePourSim : out string(1 to 1)); -- pour simulation seulement
-  end component;
-
 begin
-
-  unit_converter : septSegments_encodeur port map (
-    i_AFF => unit_input_buf,
-    o_Seg => DAFF0,
-    o_CharacterePourSim => unit_sim_sink);
-
-  tens_converter : septSegments_encodeur port map (
-    i_AFF => tens_input_buf,
-    o_Seg => DAFF1,
-    o_CharacterePourSim => tens_sim_sink);
 
   decide : process
     begin

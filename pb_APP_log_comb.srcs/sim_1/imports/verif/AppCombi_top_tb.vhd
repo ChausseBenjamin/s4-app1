@@ -57,8 +57,8 @@ architecture Behavioral of AppCombi_top_tb is
     ADCth     : out std_logic_vector (11 downto 0);     -- Connecteur ADCth thermometrique
     DEL2      : out std_logic;                         -- Carte thermometrique
     DEL3      : out std_logic;                         -- Carte thermometrique
-    button_s1 : in std_logic;                          -- Carte thermometrique
-    button_s2 : in std_logic);                           -- Carte thermometrique
+    S1        : in std_logic;                          -- Carte thermometrique
+    S2        : in std_logic);                           -- Carte thermometrique
   end component;
 
   signal clk_sim     : STD_LOGIC := '0';
@@ -143,8 +143,8 @@ begin
     ADCth       =>   ADCth_sim,
     DEL2        =>   DEL2_sim,
     DEL3        =>   DEL3_sim,
-    button_s1   =>   button_s1_sim,
-    button_s2   =>   button_s2_sim);
+    S1   =>   button_s1_sim,
+    S2   =>   button_s2_sim);
 
 
     -- Section banc de test
