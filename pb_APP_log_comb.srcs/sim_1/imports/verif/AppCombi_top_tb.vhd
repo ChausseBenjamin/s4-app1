@@ -95,7 +95,7 @@ architecture Behavioral of AppCombi_top_tb is
   constant mem_valeurs_tests : table_valeurs_tests := (
     --  vecteur de test è modifier selon les besoins
 
-    --  res      op_a     op_b    cin
+    -- ADCth input, expected PMOD, expected 7 segments, expected DEL
     "00000" & "0000" & "0000" & '0',  --   0 +  0
     "00001" & "0000" & "0001" & '0',  --   0 +  1
 
