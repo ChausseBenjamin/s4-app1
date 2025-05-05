@@ -40,7 +40,6 @@ end parity_check;
 architecture Behavioral of parity_check is
 
   signal Y : STD_LOGIC_VECTOR (2 downto 0);
-  signal PreFlip : STD_LOGIC;
 
 begin
 

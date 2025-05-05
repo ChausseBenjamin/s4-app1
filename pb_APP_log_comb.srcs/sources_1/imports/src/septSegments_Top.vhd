@@ -46,8 +46,8 @@ use ieee.std_logic_unsigned.all;
 entity septSegments_Top is
 generic (const_CLK_MHz: integer := 100);                     -- horloge en MHz, typique 100 MHz
     Port (   clk            : in   STD_LOGIC;                      -- horloge systeme, typique 100 MHz (preciser par le constante)
-             i_AFF0         : in   STD_LOGIC_VECTOR (4 downto 0);  -- donnee a afficher sur 4 bits : chiffre hexa position 0
-             i_AFF1         : in   STD_LOGIC_VECTOR (4 downto 0);  -- donnee a afficher sur 4 bits : chiffre hexa position 1
+             i_AFF0         : in   STD_LOGIC_VECTOR (3 downto 0);  -- donnee a afficher sur 4 bits : chiffre hexa position 0
+             i_AFF1         : in   STD_LOGIC_VECTOR (3 downto 0);  -- donnee a afficher sur 4 bits : chiffre hexa position 1
              o_AFFSSD_Sim   : out string(2 downto 1);
              o_AFFSSD       : out  STD_LOGIC_VECTOR (7 downto 0)
            );
@@ -57,7 +57,7 @@ architecture Behavioral of septSegments_Top is
 
 component septSegments_encodeur is
 Port(
-         i_AFF : in  STD_LOGIC_VECTOR(4 downto 0); -- caractère à afficher
+         i_AFF : in  STD_LOGIC_VECTOR(3 downto 0); -- caractère à afficher
          o_CharacterePourSim : out string(1 to 1);        -- pour simulation seulement
          o_Seg : out STD_LOGIC_VECTOR(6 downto 0) -- encodage 7-segments
     );

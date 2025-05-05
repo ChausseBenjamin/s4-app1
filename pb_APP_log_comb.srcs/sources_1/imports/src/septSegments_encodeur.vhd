@@ -42,7 +42,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity septSegments_encodeur is Port(
-  i_AFF : in  STD_LOGIC_VECTOR(4 downto 0); -- caractère à afficher
+  i_AFF : in  STD_LOGIC_VECTOR(3 downto 0); -- caractère à afficher
   o_CharacterePourSim : out string(1 to 1);    -- pour simulation seulement
   o_Seg : out STD_LOGIC_VECTOR(6 downto 0)); -- encodage 7-segments
 end septSegments_encodeur;
@@ -53,7 +53,7 @@ architecture Behavioral of septSegments_encodeur is
   function segment2String(display : std_logic_vector( 6 downto 0))
     return string is variable v_ReturnString : string(1 to 1);
     begin
-    case display is
+		case display is
       when "0111111" => v_ReturnString := "0"; -- 0
       when "0000110" => v_ReturnString := "1"; -- 1
       when "1011011" => v_ReturnString := "2"; -- 2
@@ -71,9 +71,10 @@ architecture Behavioral of septSegments_encodeur is
       when "1111001" => v_ReturnString := "E"; -- E
       when "1110001" => v_ReturnString := "F"; -- F
       when "1000000" => v_ReturnString := "-"; -- négatif
-      when "1010000" => v_ReturnString := "r"; -- r pour erreur
-      when others  => v_ReturnString := "_"; -- code non reconnu
-    end case;
+			when "1010000" => v_ReturnString := "r"; -- r pour erreur
+      when others    => v_ReturnString := "_"; -- code non reconnu
+		end case;
+
     return v_ReturnString;
   end segment2String;
 
@@ -86,26 +87,26 @@ begin
   begin
     case i_AFF is
       --                       "gfedcba"
-      when "00000" => s_Seg <= "0111111"; -- 0
-      when "00001" => s_Seg <= "0000110"; -- 1
-      when "00010" => s_Seg <= "1011011"; -- 2
-      when "00011" => s_Seg <= "1001111"; -- 3
-      when "00100" => s_Seg <= "1100110"; -- 4
-      when "00101" => s_Seg <= "1101101"; -- 5
-      when "00110" => s_Seg <= "1111101"; -- 6
-      when "00111" => s_Seg <= "0000111"; -- 7
-      when "01000" => s_Seg <= "1111111"; -- 8
-      when "01001" => s_Seg <= "1101111"; -- 9
-      when "01010" => s_Seg <= "1110111"; -- A
-      when "01011" => s_Seg <= "1111100"; -- B
-      when "01100" => s_Seg <= "0111001"; -- C
-      when "01101" => s_Seg <= "1011110"; -- D
-      when "01110" => s_Seg <= "1111001"; -- E
-      when "01111" => s_Seg <= "1110001"; -- F
-      when "10000" => s_Seg <= "1000000"; -- neg. (-)
-      when "10001" => s_Seg <= "1010000"; -- Err. (r)
-      when "10010" => s_Seg <= "0001000"; -- invalid (_)
-      when others  => s_Seg <= "0000000";
+      when "0000" => s_Seg <= "0111111"; -- 0
+      when "0001" => s_Seg <= "0000110"; -- 1
+      when "0010" => s_Seg <= "1011011"; -- 2
+      when "0011" => s_Seg <= "1001111"; -- 3
+      when "0100" => s_Seg <= "1100110"; -- 4
+      when "0101" => s_Seg <= "1101101"; -- 5
+      when "0110" => s_Seg <= "1111101"; -- 6
+      when "0111" => s_Seg <= "0000111"; -- 7
+      when "1000" => s_Seg <= "1111111"; -- 8
+      when "1001" => s_Seg <= "1101111"; -- 9
+      when "1010" => s_Seg <= "1110111"; -- A
+      when "1011" => s_Seg <= "1111100"; -- B
+      when "1100" => s_Seg <= "0111001"; -- C
+      -- when "1101" => s_Seg <= "1011110"; -- D
+      -- when "1110" => s_Seg <= "1111001"; -- E
+      -- when "1111" => s_Seg <= "1110001"; -- F
+      when "1101" => s_Seg <= "1000000"; -- neg. (-)
+      when "1110" => s_Seg <= "1010000"; -- Err. (r)
+      when "1111" => s_Seg <= "0001000"; -- undefined (_)
+      when others  => s_Seg <= "0001000";
     end case;
   end process;
 
