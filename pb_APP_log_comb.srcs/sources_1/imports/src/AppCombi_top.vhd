@@ -34,8 +34,8 @@ entity AppCombi_top is port (
   o_led6_r  : out std_logic;           -- vers DEL rouge de la carte Zybo
   o_pmodled : out std_logic_vector (7 downto 0);  -- vers connecteur pmod 8 DELs
   ADCth     : in std_logic_vector (11 downto 0);     -- Connecteur ADCth thermometrique
-  DEL1      : out std_logic;                         -- Carte thermometrique
   DEL2      : out std_logic;                         -- Carte thermometrique
+  DEL3      : out std_logic;                         -- Carte thermometrique
   button_s1 : in std_logic;                          -- Carte thermometrique
   button_s2 : in std_logic                           -- Carte thermometrique
 );
@@ -66,13 +66,13 @@ architecture BEHAVIORAL of AppCombi_top is
   --
   signal parite_out  : std_logic := '0';
 
-  component parity_check is Port (
+  component parity_check is Port ( 
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     S1 : in STD_LOGIC;
     Parite : out STD_LOGIC);
   end component;
 
-  component Fct_2_3 is Port (
+  component Fct_2_3 is Port ( 
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
     A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
   end component;
@@ -82,7 +82,7 @@ architecture BEHAVIORAL of AppCombi_top is
     bus_out : out STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
-  component Thermo2Bin is Port (
+  component Thermo2Bin is Port ( 
     thermo_bus : in STD_LOGIC_VECTOR (11 downto 0);
     binary_out : out STD_LOGIC_VECTOR (3 downto 0);
     error : out STD_LOGIC);
@@ -140,7 +140,7 @@ begin
     binary_out => ADCbin,
     error => error
   );
-
+  
   ----------------------------------------
   -- PMOD DELs
   ----------------------------------------
@@ -148,25 +148,25 @@ begin
     ADCbin => ADCbin,
     A2_3 => A2_3
   );
-
+  
   to_pmod : Decodeur_3_8 port map (
     control_bits => A2_3,
     bus_out => o_pmodled
   );
-
+  
   ----------------------------------------
   -- Parite
   ----------------------------------------
   parity : parity_check port map (
     ADCbin => ADCbin,
     S1 => button_s1,
-    Parite => parite_out
+    Parite => parite_out 
   );
-
+  
   DEL2 <= parite_out;
   o_led(0) <= parite_out;
-
-
+  
+  
   adder4 : Add4Bits port map (
     A => d_opa,
     B => d_opb,
@@ -181,10 +181,12 @@ begin
   d_opb         <=  i_btn; -- operande B sur boutons
   d_cin         <=  '0';   -- la retenue d'entrée alterne 0 1 a 1 Hz
 
-  -- d_AFF0        <=  ADCth(11 downto 7);--d_sum(4 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
-  -- d_AFF1        <=  ADCth(6 downto 2); --'0' & '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
+  --d_AFF0        <=  ADCth(11 downto 7);--d_sum(4 downto 0);        -- Le resultat de votre additionneur affiché sur PmodSSD(0)
+  --d_AFF1        <=  ADCth(6 downto 2); --'0' & '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
   o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
   --o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
   --o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
 
 end BEHAVIORAL;
+
+
