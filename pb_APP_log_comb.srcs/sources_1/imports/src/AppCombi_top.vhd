@@ -194,23 +194,23 @@ begin
   manageBCD : Bin2DualBCD port map (
     ADCBin => ADCBin,
     Dizaines => Dizaines,
-    Unite_ns => d_AFF1,
-    Code_signe => d_AFF0,
+    Unite_ns => Unite_ns,
+    Code_signe => Code_signe,
     Unite_s => Unite_s
   );
   
-  --mux_avant_7_segments :  Mux port map (
-  --  ADCbin     => ADCBin,
-  --  Dizaines   => Dizaines,
-  --  Unites_ns  => Unite_ns,
-  --  Code_signe => Code_signe,
-  --  Unite_s    => Unite_s,
-  --  BTN        => i_btn(1 downto 0),
-  --  erreur     => error,
-  --  S2         => S2,
-  --  DAFF0      => d_AFF0,
-  --  DAFF1      => d_AFF1
-  --);
+  mux_avant_7_segments :  Mux port map (
+    ADCbin     => ADCBin,
+    Dizaines   => Dizaines,
+    Unites_ns  => Unite_ns,
+    Code_signe => Code_signe,
+    Unite_s    => Unite_s,
+    BTN        => i_btn(1 downto 0),
+    erreur     => error,
+    S2         => S2,
+    DAFF0      => d_AFF0,
+    DAFF1      => d_AFF1
+  );
   
   inst_aff :  septSegments_Top port map (
     clk  => clk_5MHz,

@@ -61,7 +61,7 @@ architecture Behavioral of Mux is
 
 begin
 
-  decide : process
+  decide : process(ADCBin, Dizaines, Unites_ns, BTN, erreur, S2, Code_signe, Unite_s)
     begin
       -- HANDLE SWITCH {{{
       if ( (S2 = pressed) or (erreur = '1')) then
