@@ -1,6 +1,6 @@
 # Tâches à faire
 
-- [ ] Thermo2Bin
+- [x] Thermo2Bin
 - [x] Fct2_3
 - [x] Décodeur 3_8
 - [ ] Parité
