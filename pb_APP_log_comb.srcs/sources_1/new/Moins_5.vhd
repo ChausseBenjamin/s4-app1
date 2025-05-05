@@ -31,9 +31,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Moins_5 is
-    Port ( Moins5 : out STD_LOGIC_VECTOR (3 downto 0);
-           ADCbin : in STD_LOGIC_VECTOR (3 downto 0));
+entity Moins_5 is Port (
+  ADCbin : in  STD_LOGIC_VECTOR (3 downto 0);
+  Moins5 : out STD_LOGIC_VECTOR (3 downto 0));
 end Moins_5;
 
 
