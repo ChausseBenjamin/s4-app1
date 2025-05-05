@@ -102,14 +102,14 @@ architecture Behavioral of AppCombi_top_tb is
   constant char_5   : std_logic_vector(3 downto 0) := "0101";
   constant char_6   : std_logic_vector(3 downto 0) := "0110";
   constant char_7   : std_logic_vector(3 downto 0) := "0111";
-  constant char_8   : std_logic_vector(3 downto 0) := "0000";
-  constant char_9   : std_logic_vector(3 downto 0) := "0000";
-  constant char_a   : std_logic_vector(3 downto 0) := "0000";
-  constant char_b   : std_logic_vector(3 downto 0) := "0000";
-  constant char_c   : std_logic_vector(3 downto 0) := "0000";
-  constant char_neg : std_logic_vector(3 downto 0) := "0000";
-  constant char_e   : std_logic_vector(3 downto 0) := "0000";
-  constant char_r   : std_logic_vector(3 downto 0) := "0000";
+  constant char_8   : std_logic_vector(3 downto 0) := "1000";
+  constant char_9   : std_logic_vector(3 downto 0) := "1001";
+  constant char_a   : std_logic_vector(3 downto 0) := "1010";
+  constant char_b   : std_logic_vector(3 downto 0) := "1011";
+  constant char_c   : std_logic_vector(3 downto 0) := "1100";
+  constant char_neg : std_logic_vector(3 downto 0) := "1101";
+  constant char_e   : std_logic_vector(3 downto 0) := "1110";
+  constant char_r   : std_logic_vector(3 downto 0) := "1111";
 
   ----------------------------------------------------------------------------
   -- declaration d'un tableau pour soumettre un vecteur de test
