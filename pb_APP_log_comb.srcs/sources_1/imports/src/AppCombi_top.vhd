@@ -33,7 +33,11 @@ entity AppCombi_top is port (
   o_led     : out std_logic_vector (3 downto 0); -- vers DELs de la carte Zybo
   o_led6_r  : out std_logic;           -- vers DEL rouge de la carte Zybo
   o_pmodled : out std_logic_vector (7 downto 0);  -- vers connecteur pmod 8 DELs
-  ADCth     : in std_logic_vector (11 downto 0)     -- Connecteur ADCth thermometrique
+  ADCth     : in std_logic_vector (11 downto 0);     -- Connecteur ADCth thermometrique
+  DEL1      : out std_logic;                         -- Carte thermometrique
+  DEL2      : out std_logic;                         -- Carte thermometrique
+  button_s1 : in std_logic;                          -- Carte thermometrique
+  button_s2 : in std_logic                           -- Carte thermometrique
 );
 end AppCombi_top;
 
@@ -59,6 +63,14 @@ architecture BEHAVIORAL of AppCombi_top is
   signal error       : std_logic := '0';
   -- PMOD
   signal A2_3        : std_logic_vector (2 downto 0) := "000";
+  --
+  signal parite_out  : std_logic := '0';
+
+  component parity_check is Port ( 
+    ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
+    S1 : in STD_LOGIC;
+    Parite : out STD_LOGIC);
+  end component;
 
   component Fct_2_3 is Port ( 
     ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
@@ -142,6 +154,19 @@ begin
     bus_out => o_pmodled
   );
   
+  ----------------------------------------
+  -- Parite
+  ----------------------------------------
+  parity : parity_check port map (
+    ADCbin => ADCbin,
+    S1 => button_s1,
+    Parite => parite_out 
+  );
+  
+  DEL2 <= parite_out;
+  o_led(0) <= parite_out;
+  
+  
   adder4 : Add4Bits port map (
     A => d_opa,
     B => d_opb,
@@ -160,7 +185,7 @@ begin
   d_AFF1        <=  ADCth(6 downto 2); --'0' & '0' & '0' & '0' & d_Cout; -- La retenue de sortie affichée sur PmodSSD(1) (0 ou 1)
   o_led6_r      <=  d_Cout;                   -- La led couleur représente aussi la retenue en sortie  Cout
   --o_pmodled       <=  d_opa & d_opb;          -- Les opérandes d'entrés reproduits combinés sur Pmod8LD
-  o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
+  --o_led (3 downto 0)  <=  '0' & '0' & '0' & d_S_1Hz;   -- La LED0 sur la carte représente la retenue d'entrée
 
 end BEHAVIORAL;
 
