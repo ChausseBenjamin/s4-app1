@@ -57,7 +57,7 @@ architecture Behavioral of fct_2_3_tb is
     ----------------------------------------------------------------------------
     -- declaration d'un tableau pour soumettre un vecteur de test  
     ---------------------------------------------------------------------------- 
-    constant amount_of_tests: integer := 13;
+    constant amount_of_tests: integer := 16;
     type table_valeurs_tests is array (integer range 0 to amount_of_tests) of std_logic_vector(6 downto 0);
         constant mem_valeurs_tests : table_valeurs_tests := ( 
             --  res   input
@@ -74,6 +74,9 @@ architecture Behavioral of fct_2_3_tb is
             "110" & "1010",
             "110" & "1011",
             "111" & "1100", -- 12
+            "000" & "1101", -- IMPOSSIBLE
+            "000" & "1110", -- IMPOSSIBLE
+            "001" & "1111", -- IMPOSSIBLE
             -- conserver la ligne ci-bas.
             others => "000" & "0000"  --  0 + 0
         );
