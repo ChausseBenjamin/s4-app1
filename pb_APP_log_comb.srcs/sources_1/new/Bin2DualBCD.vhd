@@ -51,9 +51,22 @@ architecture Behavioral of Bin2DualBCD is
         units_out : out STD_LOGIC_VECTOR (3 downto 0);
         dizaines_out : out STD_LOGIC_VECTOR (3 downto 0));
     end component;
+    
+    component Moins_5 is Port (
+        ADCbin : in  STD_LOGIC_VECTOR (3 downto 0);
+        Moins5 : out STD_LOGIC_VECTOR (3 downto 0));
+    end component;
+    
+    signal Moins5_before_signed : STD_LOGIC_VECTOR (3 downto 0);
 begin
+
+    moins5 : Moins_5 port map (
+        ADCbin => ADCbin,
+        Moins5 => Moins5_before_signed
+    );
+
     signed_output : Bin2DualBCD_S port map (
-        signed_in => ADCBin,
+        signed_in => Moins5_before_signed,
         signed_code => Code_signe,
         signed_units => Unite_s
     );
