@@ -61,7 +61,7 @@ architecture Behavioral of Thermo2Bin_tb is
     ----------------------------------------------------------------------------
     -- declaration d'un tableau pour soumettre un vecteur de test  
     ---------------------------------------------------------------------------- 
-    constant amount_of_tests: integer := 13;
+    constant amount_of_tests: integer := 26;
     type table_valeurs_tests is array (integer range 0 to amount_of_tests) of std_logic_vector(16 downto 0);
         constant mem_valeurs_tests : table_valeurs_tests := ( 
             --  therm0       output   err
@@ -81,6 +81,23 @@ architecture Behavioral of Thermo2Bin_tb is
             "001111111111" & "1010" & "0", -- 10
             "011111111111" & "1011" & "0", -- 11
             "111111111111" & "1100" & "0", -- 12
+            
+            "100011111111" & "1100" & "1", -- error
+            "010011111111" & "1100" & "1", -- error
+            "001011111111" & "1100" & "1", -- error
+            "101011111111" & "1100" & "1", -- error
+            
+            "111101001111" & "1100" & "1", -- error
+            "111101011111" & "1100" & "1", -- error
+            "111110001111" & "1100" & "1", -- error
+            "111100001111" & "1100" & "1", -- error
+            
+            "111111110000" & "1100" & "1", -- error
+            "111111111000" & "1100" & "1", -- error
+            "111111110100" & "1100" & "1", -- error
+            "111111110010" & "1100" & "1", -- error
+            
+            "000000010000" & "1100" & "1", -- error
             -- conserver la ligne ci-bas.
             others => "000000000000" & "0000" & "0"  --  0 + 0
         );
