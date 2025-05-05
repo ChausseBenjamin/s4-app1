@@ -41,41 +41,61 @@ architecture Behavioral of Bin2DualBCD_S is
 
 begin
 
-    process (signed_in(3))
-        begin
-            case (signed_in(3)) is
-                when '0' =>
-                    signed_code <= "0000";
-                when '1' =>
-                    signed_code <= "1101";
-                when others =>
-                    signed_code <= "1110"; -- E
-            end case;
-     end process;
-
-    -- Units are the same regardless of sign.
-    process (signed_in(2 downto 0))
+    process (signed_in)
     begin
-        case (signed_in(2 downto 0)) is
-            when "000" =>
+        case (signed_in) is
+            when "0000" =>
                 signed_units <= "0000";
-            when "001" =>
+                signed_code <= "0000";
+            when "0001" =>
                 signed_units <= "0001";
-            when "010" =>
+                signed_code <= "0000";
+            when "0010" =>
                 signed_units <= "0010";
-            when "011" =>
+                signed_code <= "0000";
+            when "0011" =>
                 signed_units <= "0011";
-            when "100" =>
+                signed_code <= "0000";
+            when "0100" =>
                 signed_units <= "0100";
-            when "101" =>
+                signed_code <= "0000";
+            when "0101" =>
                 signed_units <= "0101";
-            when "110" =>
-                signed_units <= "0110";
-            when "111" =>
+                signed_code <= "0000";
+            when "0110" =>
+                signed_units <= "0100";
+                signed_code <= "0000";
+            when "0111" =>
                 signed_units <= "0111";
+                signed_code <= "0000";
+            when "1000" =>
+                signed_units <= "1000";
+                signed_code <= "1101";
+            when "1001" =>
+                signed_units <= "0111";
+                signed_code <= "1101";
+            when "1010" =>
+                signed_units <= "0110";
+                signed_code <= "1101";
+            when "1011" =>
+                signed_units <= "0101";
+                signed_code <= "1101";
+            when "1100" =>
+                signed_units <= "0100";
+                signed_code <= "1101";
+            when "1101" =>
+                signed_units <= "0011";
+                signed_code <= "1101";
+            when "1110" =>
+                signed_units <= "0010";
+                signed_code <= "1101";
+            when "1111" =>
+                signed_units <= "0001";
+                signed_code <= "1101";
             when others =>
-                signed_units <= "1111"; -- r
+                signed_units <= "1111";
+                signed_code <= "1110";
         end case;
-     end process;
+    end process;
 
 end Behavioral;
