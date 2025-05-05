@@ -27,12 +27,13 @@ use UNISIM.Vcomponents.ALL;
 
 entity AppCombi_top is port (
   i_btn     : in  std_logic_vector (3 downto 0); -- Boutons de la carte Zybo
-  i_sw    : in  std_logic_vector (3 downto 0); -- Interrupteurs de la carte Zybo
+  i_sw      : in  std_logic_vector (3 downto 0); -- Interrupteurs de la carte Zybo
   sysclk    : in  std_logic;           -- horloge systeme
-  o_SSD     : out   std_logic_vector (7 downto 0); -- vers cnnecteur pmod afficheur 7 segments
-  o_led     : out   std_logic_vector (3 downto 0); -- vers DELs de la carte Zybo
-  o_led6_r  : out   std_logic;           -- vers DEL rouge de la carte Zybo
-  o_pmodled   : out   std_logic_vector (7 downto 0)  -- vers connecteur pmod 8 DELs
+  o_SSD     : out std_logic_vector (7 downto 0); -- vers cnnecteur pmod afficheur 7 segments
+  o_led     : out std_logic_vector (3 downto 0); -- vers DELs de la carte Zybo
+  o_led6_r  : out std_logic;           -- vers DEL rouge de la carte Zybo
+  o_pmodled : out std_logic_vector (7 downto 0);  -- vers connecteur pmod 8 DELs
+  ADCth     : out std_logic_vector (11 downto 0)     -- Connecteur ADCth thermometrique
 );
 end AppCombi_top;
 
@@ -53,7 +54,27 @@ architecture BEHAVIORAL of AppCombi_top is
   --
   signal d_AFF0      : std_logic_vector (4 downto 0):= "00000";
   signal d_AFF1      : std_logic_vector (4 downto 0):= "00000";
+  --
+  signal ADCbin      : std_logic_vector (3 downto 0) := "00000";
+  signal error       : std_logic := '0';
+  -- PMOD
+  signal A2_3        : std_logic_vector (2 downto 0) := "000";
 
+  component Fct_2_3 is Port ( 
+    ADCbin : in STD_LOGIC_VECTOR (3 downto 0);
+    A2_3 : out STD_LOGIC_VECTOR (2 downto 0));
+  end component;
+
+  component Decodeur_3_8 is Port (
+    control_bits : in STD_LOGIC_VECTOR (2 downto 0);
+    bus_out : out STD_LOGIC_VECTOR (7 downto 0));
+  end component;
+
+  component Thermo2Bin is Port ( 
+    thermo_bus : in STD_LOGIC_VECTOR (11 downto 0);
+    binary_out : out STD_LOGIC_VECTOR (3 downto 0);
+    error : out STD_LOGIC);
+   end component;
 
   component Add4Bits is Port (
     A : in STD_LOGIC_VECTOR (3 downto 0);
@@ -81,11 +102,6 @@ architecture BEHAVIORAL of AppCombi_top is
   );
   end component;
 
-  component Decodeur_3_8 is
-    Port ( control_bits : in STD_LOGIC_VECTOR (2 downto 0);
-           bus_out : out STD_LOGIC_VECTOR (7 downto 0));
-  end component;
-
 begin
 
   inst_synch : synchro_module_v2
@@ -104,7 +120,28 @@ begin
     o_AFFSSD     => o_SSD   -- sorties directement adaptees au connecteur PmodSSD
   );
 
-
+  ----------------------------------------
+  -- Thermo2Bin converts to ADCbin
+  ----------------------------------------
+  thermo_2_bin : Thermo2Bin port map (
+    thermo_bus => ADCth,
+    binary_out => ADCbin,
+    error => error
+  );
+  
+  ----------------------------------------
+  -- PMOD DELs
+  ----------------------------------------
+  before_decoder : Fct_2_3 port map (
+    ADCbin => ADCbin,
+    A2_3 => A2_3
+  );
+  
+  to_pmod : Decodeur_3_8 port map (
+    control_bits => A2_3,
+    bus_out => o_pmodled
+  );
+  
   adder4 : Add4Bits port map (
     A => d_opa,
     B => d_opb,
@@ -114,11 +151,6 @@ begin
   );
 
   led_test_btn <= i_btn(2 downto 0);
-
-  ledTest : Decodeur_3_8 port map (
-    control_bits => led_test_btn,
-    bus_out => o_pmodled
-  );
 
   d_opa         <=  i_sw;  -- operande A sur interrupteurs
   d_opb         <=  i_btn; -- operande B sur boutons
