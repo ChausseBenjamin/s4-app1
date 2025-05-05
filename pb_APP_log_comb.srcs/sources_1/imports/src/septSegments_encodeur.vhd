@@ -86,27 +86,24 @@ begin
   o_Segent:  process (i_AFF)
   begin
     case i_AFF is
-      --                       "gfedcba"
-      when "0000" => s_Seg <= "0111111"; -- 0
-      when "0001" => s_Seg <= "0000110"; -- 1
-      when "0010" => s_Seg <= "1011011"; -- 2
-      when "0011" => s_Seg <= "1001111"; -- 3
-      when "0100" => s_Seg <= "1100110"; -- 4
-      when "0101" => s_Seg <= "1101101"; -- 5
-      when "0110" => s_Seg <= "1111101"; -- 6
-      when "0111" => s_Seg <= "0000111"; -- 7
-      when "1000" => s_Seg <= "1111111"; -- 8
-      when "1001" => s_Seg <= "1101111"; -- 9
-      when "1010" => s_Seg <= "1110111"; -- A
-      when "1011" => s_Seg <= "1111100"; -- B
-      when "1100" => s_Seg <= "0111001"; -- C
-      -- when "1101" => s_Seg <= "1011110"; -- D
-      -- when "1110" => s_Seg <= "1111001"; -- E
-      -- when "1111" => s_Seg <= "1110001"; -- F
-      when "1101" => s_Seg <= "1000000"; -- neg. (-)
-      when "1110" => s_Seg <= "1010000"; -- Err. (r)
-      when "1111" => s_Seg <= "0001000"; -- undefined (_)
-      when others  => s_Seg <= "0001000";
+      --                      "gfedcba"
+      when "0000" => s_Seg <= "0111111";  -- 0
+      when "0001" => s_Seg <= "0000110";  -- 1
+      when "0010" => s_Seg <= "1011011";  -- 2
+      when "0011" => s_Seg <= "1001111";  -- 3
+      when "0100" => s_Seg <= "1100110";  -- 4
+      when "0101" => s_Seg <= "1101101";  -- 5
+      when "0110" => s_Seg <= "1111101";  -- 6
+      when "0111" => s_Seg <= "0000111";  -- 7
+      when "1000" => s_Seg <= "1111111";  -- 8
+      when "1001" => s_Seg <= "1101111";  -- 9
+      when "1010" => s_Seg <= "1110111";  -- A
+      when "1011" => s_Seg <= "1111100";  -- B
+      when "1100" => s_Seg <= "0111001";  -- C
+      when "1101" => s_Seg <= "1000000";  -- neg. (-)
+      when "1110" => s_Seg <= "1111001";  -- E
+      when "1111" => s_Seg <= "0001100";  -- r (for "Er")
+      when others  => s_Seg <= "0001000"; -- undefined ("_")
     end case;
   end process;
 
