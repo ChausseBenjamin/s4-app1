@@ -42,6 +42,7 @@ architecture Behavioral of Fct_2_3 is
     signal shifted_once : STD_LOGIC_VECTOR(3 downto 0);
     signal shifted_twice : STD_LOGIC_VECTOR(3 downto 0);
     signal shifted_thrice : STD_LOGIC_VECTOR(3 downto 0);
+    signal carry_in : STD_LOGIC;
     signal carry_out : STD_LOGIC;
     signal added : STD_LOGIC_VECTOR(3 downto 0);
     
@@ -60,11 +61,19 @@ begin
     shifted_twice <= '0' & shifted_once(3 downto 1);
     shifted_thrice <= '0' & shifted_twice(3 downto 1);
     
+    -- If we shifted 4 times... There's cases where the decimal point would cause a carry in to exist!
+    -- If we don't take that into account... the number 4 will NEVER show up!
+    -- Here's how to figure out if there can be a carry in
+    -- 1001 -> 0100,1, so index 0 is when it's shifted once
+    -- 1100 -> 0001,1  so index 2 is the deecimal when shifted 3 times.
+    -- If both are true, the addition should've made a carry in!
+    carry_in <= ADCbin(0) AND ADCbin(2);
+    
     -- Both are then added to give the result of the 2/3 multiplication (0.625)
     result : Add4Bits port map (
         A  => shifted_once,
         B  => shifted_thrice,
-        C => '0',
+        C => carry_in,
         R => added,
         Rc => carry_out
     );
