@@ -39,7 +39,6 @@ entity Mux is port (
     Unite_s    : in  STD_LOGIC_VECTOR (3 downto 0);
     BTN        : in  STD_LOGIC_VECTOR (2 downto 0);
     erreur     : in  STD_LOGIC;
-    S1         : in  STD_LOGIC;
     S2         : in  STD_LOGIC;
     DAFF0      : out STD_LOGIC_VECTOR (3 downto 0);
     DAFF1      : out STD_LOGIC_VECTOR (3 downto 0));
@@ -49,9 +48,8 @@ architecture Behavioral of Mux is
 
   constant pressed : STD_LOGIC := '1';
 
-  constant msg_Err   : STD_LOGIC_VECTOR(9 downto 0)   := "01110" & "10001";
-  -- constant char_neg  : STD_LOGIC_VECTOR(4 downto 0) := "10000";
-  -- constant char_ndef : STD_LOGIC_VECTOR(4 downto 0) := "10010";
+  constant char_E : STD_LOGIC_VECTOR(3 downto 0) := "1110";  -- E
+  constant char_r : STD_LOGIC_VECTOR(3 downto 0) := "1111";  -- r (for "Er")
 
   signal break : BOOLEAN := FALSE;
 
@@ -81,34 +79,34 @@ begin
 
   decide : process
     begin
-      -- HANDLE SWITCHES {{{
-      if S2 = pressed then
+      -- HANDLE SWITCH {{{
+      if ( (S2 = pressed) or (erreur = '1')) then
         break <= TRUE; -- Avoids double printing on 7seg
-        unit_input_buf <= msg_Err(9 downto 5);
-        tens_input_buf <= msg_Err(4 downto 0);
-      else
-        if S1 = pressed then
-          -- TODO: parité paire sur LD0 (Zybo) et DEL2 (carte thermo)
-        else
-          -- TODO: parité impaire sur LD0 (Zybo) et DEL2 (carte thermo)
-        end if;
+        tens_input_buf <= char_E;
+        unit_input_buf <= char_r;
       end if;
       -- }}}
       -- HANDLE BUTTONS {{{
       if break = FALSE then
         case (BTN) is
           when "00" =>
-             -- TODO: BCD sur 7Seg.
+             unit_input_buf <= Unites_ns;
+             tens_input_buf <= Dizaines;
           when "01" =>
-             -- TODO: Hex sur 7Seg.
+            -- impossible de buster "C" en hex
+            -- encore moins avoir une deuxième décimale
+            -- on mets donc les "Dizaines" à zéro
+            unit_input_buf <= ADCbin;
+            tens_input_buf <= "0000";
           when "10" =>
-             -- TODO: (BCD-5) sur 7Seg.
+            unit_input_buf <= Unite_s;
+            tens_input_buf <= Code_signe;
           when "11" =>
-            unit_input_buf <= msg_Err(9 downto 5);
-            tens_input_buf <= msg_Err(4 downto 0);
+            tens_input_buf <= char_E;
+            unit_input_buf <= char_r;
           when others =>
-            unit_input_buf <= msg_Err(9 downto 5);
-            tens_input_buf <= msg_Err(4 downto 0);
+            tens_input_buf <= char_E;
+            unit_input_buf <= char_r;
        end case;
       end if;
       -- }}}
