@@ -53,7 +53,8 @@ architecture Behavioral of AppCombi_top_tb is
     o_SSD     : out std_logic_vector (7 downto 0);
     o_led     : out std_logic_vector (3 downto 0);
     o_led6_r  : out std_logic;
-    o_pmodled : out std_logic_vector (7 downto 0));
+    o_pmodled : out std_logic_vector (7 downto 0);
+    ADCth     : out std_logic_vector (11 downto 0));     -- Connecteur ADCth thermometrique
   end component;
 
   signal clk_sim     : STD_LOGIC := '0';
@@ -64,6 +65,7 @@ architecture Behavioral of AppCombi_top_tb is
   signal sw_sim      : STD_LOGIC_VECTOR (3 downto 0) := "0000";
   signal btn_sim     : STD_LOGIC_VECTOR (3 downto 0) := "0000";
   signal cin_sim     : STD_LOGIC := '0';
+  signal ADCth_sim   : STD_LOGIC_VECTOR (11 downto 0) := "000000000000";
 
   signal vecteur_test_sim : STD_LOGIC_VECTOR (13 downto 0) := (others => '0');
   signal resultat_attendu : STD_LOGIC_VECTOR (4 downto 0)  := "00000";
@@ -129,7 +131,8 @@ begin
     o_SSD       =>   SSD_sim,
     o_led       =>   led_sim,
     o_pmodled   =>   pmodled_sim,
-    o_led6_r    =>   led6_r_sim);
+    o_led6_r    =>   led6_r_sim,
+    ADCth       =>   ADCth_sim);
 
 
 

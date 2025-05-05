@@ -55,7 +55,7 @@ architecture BEHAVIORAL of AppCombi_top is
   signal d_AFF0      : std_logic_vector (4 downto 0):= "00000";
   signal d_AFF1      : std_logic_vector (4 downto 0):= "00000";
   --
-  signal ADCbin      : std_logic_vector (3 downto 0) := "00000";
+  signal ADCbin      : std_logic_vector (3 downto 0) := "0000";
   signal error       : std_logic := '0';
   -- PMOD
   signal A2_3        : std_logic_vector (2 downto 0) := "000";
