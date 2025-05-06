@@ -52,7 +52,7 @@ se retrouvent dans l'annexe (\todo{\ref{tab:karnaugh-bit-G}}, \todo{\ref{tab:kar
 simplification ou $A'$ à été mis en évidence. Les équations étant assez simplifié sont les suivantes:
 
 \begin{align}
-  E &= 0 \\ F &= A \\ G &= A'C \\ H &= A'(C'D+BC)
+  E &= 0 \\ F &= A \\ G &= A'C \\ H &= C'D+A'B
 \end{align}
 
 Après, les trois nombre binaires sont additionner ensemble pour obtenir un résultat correspondant au nombre de bits à 1 dans le code
@@ -70,7 +70,33 @@ afin de les rendre plus rapide qu'uniquement des portes logiques brute.
 \subsection{Fréquence d'opération}
 Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
 parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado. Cependant, Vivado éxecute
-une synthèse du circuit, fesant une optimisation des portes logiques et donc réduisant le nombre utilisé pour le module thermo2bin.
+une synthèse du circuit, fesant une optimisation des portes logiques et donc réduisant le nombre utilisé pour le module thermo2bin. 
+\\
+Vivado à optimizer l'additionneur 1 bit avec des "look-up" tables, sinon le plus long chemin interne est entre les bits d'entrées et le
+"carry-out" est un total de $3$ portes logiques pour le premier additionneur 1 bits. Apres, tout les additionneur 1 bit font une chaine 
+de "carry-in" à "carry-out" qui prend $2$ portes logiques. l'additionneur 4 bits en utilise 4. Le plus long chemin de celui-ci est visible 
+dans le schéma de l'annexe et est le "daisy-chain" entre le "carry-in" et le "carry-out", qui donne un total de 4 additionneur 1 bit à 
+passer au travers. Donc $2\times4+1=9$ portes logiques pour l'additionneur 4 bits. Le module thermo2bin à 2 additionneur 4 bits dans lequel 
+un "carry-in" peut se propager. Le deuxième additionneur de 4 bits utiliserait $8$ portes logiques car son entrée est le 
+"carry-out" de l'additionneur d'avant. Donc $17$ portes logique. Pour l'entrée du thermo2bin, le bit avec le plus de porte logique pour son 
+calcul est celui du $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique 
+de plus. le total est donc environ $20$ porte logique.
+\\
+On indique un temps de propagation de $5ns$. Le temps de propagation maximum possible est donc environ $20\times5=100ns$. Sans ajouter de
+temps de lecture, et sans prendre en compte les "buffers" ajouter par Vivado sur les entrés et sorties, la fréquence en Hertz est donc 
+très approximativement la suivante:
+
+\begin{align}
+  10000000 \approx \frac{1}{100\times10^{-9}}
+\end{align}
+
+$10\text{Mhz}$ est loin du $20\text{Mhz}$ demandé. Cependant, Vivado a optimiser l'additionneur d'un bit avec des "look-up tables",
+réduisant le circuit logique de $3$ maximum à $1$, pour un total d'environ $11$ au lieu de $20$. Cependant, ce n'est toujours pas
+suffisant ($18\text{Mhz}$).
+
+\begin{align}
+  18181818 \approx \frac{1}{(11\times5)\times10^{-9}}
+\end{align}
 
 \subsection{Implémentation}
 
