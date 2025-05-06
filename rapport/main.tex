@@ -7,6 +7,8 @@
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{float}
+\usepackage{varwidth}
+% \usepackage[toc,page]{appendix}
 \usepackage[usenames,dvipsnames]{xcolor}
 
 \title{Rapport d'APP}
@@ -31,6 +33,9 @@
 
 \begin{document}
 \maketitle
+\newpage
+\tableofcontents
+\newpage
 
 \todo{test} \fixme{another test} \note{interesting} \question{wtf}
 
@@ -45,5 +50,5 @@
 \section{Démarche d'analyse}
 
 
-
+\input{annexe.tex}
 \end{document}
