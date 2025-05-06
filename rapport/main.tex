@@ -43,7 +43,12 @@
 
 \subsection{Démarche}
 Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
-est connue en comptant le nombre de bits à un. Donc, les équations logique
+est connue en comptant le nombre de bits à un. Donc, les équations logiques doivent compter le nombre de bit à 1. Le code étant 12 bits,
+il a pu être divisé en trois sections de 4 bits ce qui a permis l'utilisation de tableaux de Karnaugh pour trouver les équations. Selon
+la table de vérité d'un code thermométrique de 4 bits, le bit le plus significatif du résultat en binaire n'est jamais à 1. L'équation du
+bit $F$ est donc simplement $F=0$.
+
+\subsection{Fréquence d'opération}
 
 \subsection{Explication des schéma blocs}
 
