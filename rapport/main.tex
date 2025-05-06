@@ -70,17 +70,16 @@ afin de les rendre plus rapide qu'uniquement des portes logiques brute.
 
 \subsection{Fréquence d'opération}
 Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
-parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado. Cependant, Vivado éxecute
-une synthèse du circuit, fesant une optimisation des portes logiques et donc réduisant le nombre utilisé pour le module thermo2bin. 
+parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado.
 \\
-Vivado à optimizer l'additionneur 1 bit avec des "look-up" tables, sinon le plus long chemin interne est entre les bits d'entrées et le
-"carry-out" est un total de $3$ portes logiques pour le premier additionneur 1 bits. Apres, tout les additionneur 1 bit font une chaine 
-de "carry-in" à "carry-out" qui prend $2$ portes logiques. l'additionneur 4 bits en utilise 4. Le plus long chemin de celui-ci est visible 
+Le plus long chemin interne d'un additionneur 1 bit est entre les bits d'entrées et le "carry-out", un total de $3$ portes logiques pour 
+le premier additionneur 1 bits. Apres, tout les additionneur 1 bit font une chaine  de "carry-in" à "carry-out" qui prend $2$ portes
+logiques. l'additionneur 4 bits a utilisé 4 additionneur d'un bit. Le plus long chemin de celui-ci est visible 
 dans le schéma de l'annexe et est le "daisy-chain" entre le "carry-in" et le "carry-out", qui donne un total de 4 additionneur 1 bit à 
 passer au travers. Donc $2\times4+1=9$ portes logiques pour l'additionneur 4 bits. Le module thermo2bin à 2 additionneur 4 bits dans lequel 
 un "carry-in" peut se propager. Le deuxième additionneur de 4 bits utiliserait $8$ portes logiques car son entrée est le 
 "carry-out" de l'additionneur d'avant. Donc $17$ portes logique. Pour l'entrée du thermo2bin, le bit avec le plus de porte logique pour son 
-calcul est celui du $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique 
+calcul est le $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique 
 de plus. le total est donc environ $20$ porte logique.
 \\
 On indique un temps de propagation de $5ns$. Le temps de propagation maximum possible est donc environ $20\times5=100ns$. Sans ajouter de
@@ -116,6 +115,25 @@ les bits à la position 1 ensemble, ainsi de suite.
 Les additionneurs 1 bits son simple et sont le résultat d'une table de vérité de laquel une expression booléaine à été construite.
 
 \section{Simulation Complète}
+Tout les modules du projet ont leurs propre test bench avec leurs tests unitaire. Par conséquent, le testbench de AppCombiTop n'a pas
+tout les tests de 7 segments. Il test que les boutons changent les deux DELs de parité et que l'entrée ADCth change les DELs PMOD.
+Le testbench de Thermo2bin test tout les cas de figure valide et quelques tests invalide. Les autres testbench testent les modules
+individuellement pour tout les cas de figure ou presque tout. Il était donc redondant et trop long de refaire tout ces tests unitaire la
+dans le test bench d'AppCombiTop, car une duplication des fonctionalitées testé aurait lieux.
+\\
+Le banc de test du Mux ne tests pas toutes les possibilitées. Étant donnée qu'il est composé de 3 autres composantes lesquels ont leurs
+propre banc de tests, cela aurait créé des tests redondant. Le banc de test du Mux test les combinaisons de boutons donnant une erreur,
+s'assure que celle-ci est envoyé aux 7 segments, que l'erreur en entrée fonctionne, et que toutes combinaisons de boutons valide affiche
+les bon nombre sur les 7 segments en sortie. Il test aussi la présence du Moin 5 sur la sortie signée.
+\\
+Le test de thermo2bin n'a pas besoin de tester les $2^{12}$ possibilité. Il suffit de tester les $12$ valide puis de tester que la
+détection d'erreur fonctionne sur toutes les paires de $2$ bits. Ensuite, quelques tests avec plusieurs zéros aléatoire sont effectué
+juste pour confirmé.
+\\
+Les banc de tests utilisent des "assert" qui permet d'afficher dans le terminal si des problèmes ont eut lieux (résultat obtenu diffère
+du résultat voulu). La plus part fonctionne parfaitement tandis que d'autre montre quelques problèmes liés aux "undefined" qui causent des
+affichage d'erreur incohérent tel que: "Obtenu 0 Voulu 0". Un autre cas est celui de Thermo2bin qui montre un décalage de 1 dans le
+graphique des 12 bits thermométrique par rapport aux résultat obtenu et voulu malgrés le bon fonctionnement du module.
 
 \section{Démarche d'analyse de compatibilité}
 La première étape à été d'analyser le signal d'entrée de la carte thermométrique. La DEL 2 est connecté au connecteur JD1 en
