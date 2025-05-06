@@ -38,22 +38,20 @@
 \tableofcontents
 \newpage
 
-\todo{test} \fixme{another test} \note{interesting} \question{wtf}
-
 \section{Module thermo2bin}
 
 \subsection{Démarche et équations}
 Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
 est connue en comptant le nombre de bits à un. Donc, les équations logiques doivent compter le nombre de bit à 1. Le code étant 12 bits,
 il a pu être divisé en trois sections de 4 bits ce qui a permis l'utilisation de tableaux de Karnaugh pour trouver les équations. Selon
-la table de vérité (\todo{\ref{tab:table-de-vérité-thermométrique-4-bits}}) d'un code thermométrique de 4 bits, le bit le plus significatif
+la table de vérité  du code thermométrique de 4 bits (\ref{tab:table-de-vérité-thermométrique-4-bits}), le bit le plus significatif
 du résultat en binaire n'est jamais à 1. L'équation du bit $E$ est donc simplement $E=0$. Le bit $F$ est uniquement à 1 si $A$ est à un, donc
 l'équation est simplement $F=A$. On a donc besoin des tables pour uniquement deux bits des 4. Les deux tables de karnaugh pour chaque bits
-se retrouvent dans l'annexe (\todo{\ref{tab:karnaugh-bit-G}}, \todo{\ref{tab:karnaugh-bit-H}}). Uniquement l'équation du bit $H$ à eut une
+se retrouvent dans l'annexe (\ref{tab:karnaugh-bit-G} et \ref{tab:karnaugh-bit-H}). Uniquement l'équation du bit $H$ à eut une
 simplification ou $A'$ à été mis en évidence. Les équations étant assez simplifié sont les suivantes:
 
 \begin{align}
-  E &= 0 \\ F &= A \\ G &= A'C \\ H &= C'D+A'B
+	E & = 0 \\ F &= A \\ G &= A'C \\ H &= C'D+A'B
 \end{align}
 
 Après, les trois nombre binaires sont additionner ensemble pour obtenir un résultat correspondant au nombre de bits à 1 dans le code
@@ -72,22 +70,22 @@ afin de les rendre plus rapide qu'uniquement des portes logiques brute.
 Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
 parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado.
 \\
-Le plus long chemin interne d'un additionneur 1 bit est entre les bits d'entrées et le "carry-out", un total de $3$ portes logiques pour 
+Le plus long chemin interne d'un additionneur 1 bit est entre les bits d'entrées et le "carry-out", un total de $3$ portes logiques pour
 le premier additionneur 1 bits. Apres, tout les additionneur 1 bit font une chaine  de "carry-in" à "carry-out" qui prend $2$ portes
-logiques. l'additionneur 4 bits a utilisé 4 additionneur d'un bit. Le plus long chemin de celui-ci est visible 
-dans le schéma de l'annexe et est le "daisy-chain" entre le "carry-in" et le "carry-out", qui donne un total de 4 additionneur 1 bit à 
-passer au travers. Donc $2\times4+1=9$ portes logiques pour l'additionneur 4 bits. Le module thermo2bin à 2 additionneur 4 bits dans lequel 
-un "carry-in" peut se propager. Le deuxième additionneur de 4 bits utiliserait $8$ portes logiques car son entrée est le 
-"carry-out" de l'additionneur d'avant. Donc $17$ portes logique. Pour l'entrée du thermo2bin, le bit avec le plus de porte logique pour son 
-calcul est le $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique 
+logiques. l'additionneur 4 bits a utilisé 4 additionneur d'un bit. Le plus long chemin de celui-ci est visible
+dans le schéma de l'annexe et est le "daisy-chain" entre le "carry-in" et le "carry-out", qui donne un total de 4 additionneur 1 bit à
+passer au travers. Donc $2\times4+1=9$ portes logiques pour l'additionneur 4 bits. Le module thermo2bin à 2 additionneur 4 bits dans lequel
+un "carry-in" peut se propager. Le deuxième additionneur de 4 bits utiliserait $8$ portes logiques car son entrée est le
+"carry-out" de l'additionneur d'avant. Donc $17$ portes logique. Pour l'entrée du thermo2bin, le bit avec le plus de porte logique pour son
+calcul est le $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique
 de plus. le total est donc environ $20$ porte logique.
 \\
 On indique un temps de propagation de $5ns$. Le temps de propagation maximum possible est donc environ $20\times5=100ns$. Sans ajouter de
-temps de lecture, et sans prendre en compte les "buffers" ajouter par Vivado sur les entrés et sorties, la fréquence en Hertz est donc 
+temps de lecture, et sans prendre en compte les "buffers" ajouter par Vivado sur les entrés et sorties, la fréquence en Hertz est donc
 très approximativement la suivante:
 
 \begin{align}
-  10000000 \approx \frac{1}{100\times10^{-9}}
+	10000000 \approx \frac{1}{100\times10^{-9}}
 \end{align}
 
 $10\text{Mhz}$ est loin du $20\text{Mhz}$ demandé. Cependant, Vivado a optimiser l'additionneur d'un bit avec des "look-up tables",
@@ -95,7 +93,7 @@ réduisant le circuit logique de $3$ maximum à $1$, pour un total d'environ $11
 suffisant ($18\text{Mhz}$).
 
 \begin{align}
-  18181818 \approx \frac{1}{(11\times5)\times10^{-9}}
+	18181818 \approx \frac{1}{(11\times5)\times10^{-9}}
 \end{align}
 
 \subsection{Implémentation}
