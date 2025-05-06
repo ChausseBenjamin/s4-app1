@@ -120,7 +120,7 @@ individuellement pour tout les cas de figure ou presque tout. Il était donc red
 dans le test bench d'AppCombiTop, car une duplication des fonctionalitées testé aurait lieux.
 \\
 Le banc de test du Mux ne tests pas toutes les possibilitées. Étant donnée qu'il est composé de 3 autres composantes lesquels ont leurs
-propre banc de tests, cela aurait créé des tests redondant. Le banc de test du Mux test les combinaisons de boutons donnant une erreur,
+propre banc de tests, cela aurait créé des tests redondant. Il test les combinaisons de boutons donnant une erreur,
 s'assure que celle-ci est envoyé aux 7 segments, que l'erreur en entrée fonctionne, et que toutes combinaisons de boutons valide affiche
 les bon nombre sur les 7 segments en sortie. Il test aussi la présence du Moin 5 sur la sortie signée.
 \\
@@ -130,8 +130,12 @@ juste pour confirmé.
 \\
 Les banc de tests utilisent des "assert" qui permet d'afficher dans le terminal si des problèmes ont eut lieux (résultat obtenu diffère
 du résultat voulu). La plus part fonctionne parfaitement tandis que d'autre montre quelques problèmes liés aux "undefined" qui causent des
-affichage d'erreur incohérent tel que: "Obtenu 0 Voulu 0". Un autre cas est celui de Thermo2bin qui montre un décalage de 1 dans le
-graphique des 12 bits thermométrique par rapport aux résultat obtenu et voulu malgrés le bon fonctionnement du module.
+affichage d'erreur incohérent tel que: "Obtenu 0 Voulu 0". Malgrès beaucoup de deboggage et le fonctionnement réelle du module, le banc de
+test du Mux montre des problème de changements et est difficile à lire. Le numéro de test est donc fournis dans son chronogramme. Pour le
+banc de test de parité, deux chronogrammes sont fournis en fonction de l'état du bouton (cfg). Les banc de tests démontres quelques
+problèmes de valeurs initiales, comme une valeur de sortie qui change alors que l'entrée n'a pas changé. L'approche utilisé pour faire
+les bancs de tests devra être révisé afin de mitiger ces problèmes de chronogrammes. Tout les banc de tests ont des "expected" pour les
+"outputs" attendu. Leurs noms sont directement en lien avec la fonctionalité du module et pas forcément le nom du signal haut niveau.
 
 \section{Démarche d'analyse de compatibilité}
 La première étape à été d'analyser le signal d'entrée de la carte thermométrique. La DEL 2 est connecté au connecteur JD1 en
