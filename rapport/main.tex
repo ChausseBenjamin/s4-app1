@@ -37,6 +37,10 @@
 \section{Module thermo2bin}
 
 \subsection{Démarche}
+Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
+est connue en comptant le nombre de bits à un. Donc, les équations logique
+
+\subsection{Explication des schéma blocs}
 
 \subsection{Implémentation}
 
@@ -45,8 +49,8 @@
 \section{Démarche d'analyse de compatibilité}
 La première étape à été d'analyser le signal d'entrée de la carte thermométrique. La DEL 2 est connecté au connecteur JD1 en
 configuration "pull-up". Ceci dit, il faut donc avoir un 0 logique à son entrée pour l'allumé. Cependant, trois inverseurs sont
-connecté en série avant elle. Soit deux 74V1T04STR et un NC7SP04P5X alimenté à +1.2 Volts. Après analyse de V_{OH}, V_{OL}, V_{IL}
-et V_{IH} des deux portes logiques, le NC7SP04P5X à un V_{OH} de maximum 1.1 volts tandis que le 74V1T04STR à besoin d'un V_{IH}
+connecté en série avant elle. Soit deux 74V1T04STR et un NC7SP04P5X alimenté à +1.2 Volts. Après analyse de $V_{OH}$, $V_{OL}$, $V_{IL}$
+et $V_{IH}$ des deux portes logiques, le NC7SP04P5X à un $V_{OH}$ de maximum 1.1 volts tandis que le 74V1T04STR à besoin d'un $V_{IH}$
 minimum de 2 Volts. Donc selon le 74V1T04STR, le NC7SP04P5X envoie toujours un niveau logique bas, ce qui résulte à une del
 tout le temps allumé sauf lorsque le connecteur de test de la del est en mode de test car un bon niveau logique haut est envoyé à
 l'entrée des 74V1T04STR.
