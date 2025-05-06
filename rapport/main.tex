@@ -42,7 +42,7 @@
 
 \section{Module thermo2bin}
 
-\subsection{Démarche}
+\subsection{Démarche et équations}
 Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
 est connue en comptant le nombre de bits à un. Donc, les équations logiques doivent compter le nombre de bit à 1. Le code étant 12 bits,
 il a pu être divisé en trois sections de 4 bits ce qui a permis l'utilisation de tableaux de Karnaugh pour trouver les équations. Selon
@@ -65,7 +65,8 @@ y a des erreurs. (voir le code en annexe).
 Thermo2bin est composé de deux additionneur 4 bits, lesquels sont composé de 4 additionneur 1 bits. L'additionneur 1 bit fait avec de la
 logique combinatoire et celui fait avec des commandes "cases" sont synthéthisé par Vivado et donne le même circuit. On retrouve dans le
 module thermométrique 3 sections identiques de convertions thermométrique 4 bits en binaire non signé. Le module thermométrique à aussi
-une section de détection d'erreur qui prend l'entrée directement.
+une section de détection d'erreur qui prend l'entrée directement. Notez que Vivado optimize certains modules avec des "look-up" tables
+afin de les rendre plus rapide qu'uniquement des portes logiques brute.
 
 \subsection{Fréquence d'opération}
 Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
