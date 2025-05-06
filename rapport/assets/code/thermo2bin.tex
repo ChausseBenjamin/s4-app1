@@ -4,12 +4,12 @@ architecture Behavioral of Thermo2Bin is
   signal second_segment_of_four : STD_LOGIC_VECTOR(3 downto 0);
   signal third_segment_of_four : STD_LOGIC_VECTOR(3 downto 0);
 
-  component Add4Bits is
-    Port ( A : in STD_LOGIC_VECTOR (3 downto 0);
-      B : in STD_LOGIC_VECTOR (3 downto 0);
-      C : in STD_LOGIC;
-      R : out STD_LOGIC_VECTOR (3 downto 0);
-      Rc : out STD_LOGIC);
+  component Add4Bits is Port (
+    A : in STD_LOGIC_VECTOR (3 downto 0);
+    B : in STD_LOGIC_VECTOR (3 downto 0);
+    C : in STD_LOGIC;
+    R : out STD_LOGIC_VECTOR (3 downto 0);
+    Rc : out STD_LOGIC);
   end component;
 
   signal first_plus_second : STD_LOGIC_VECTOR(3 downto 0);
@@ -17,34 +17,35 @@ architecture Behavioral of Thermo2Bin is
   signal last_carry_out : STD_LOGIC;
 
 begin
+
   first_segment_of_four(3) <= '0';
   first_segment_of_four(2) <= thermo_bus(11);
   first_segment_of_four(1) <= NOT thermo_bus(11) AND thermo_bus(9);
-  first_segment_of_four(0) <= NOT thermo_bus(11) AND ((NOT thermo_bus(9) AND thermo_bus(8)) OR (thermo_bus(10) AND thermo_bus(9)));
+  first_segment_of_four(0) <= (NOT thermo_bus(11) AND thermo_bus(10)) OR (NOT thermo_bus(9) AND thermo_bus(8));
 
   second_segment_of_four(3) <= '0';
   second_segment_of_four(2) <= thermo_bus(7);
   second_segment_of_four(1) <= NOT thermo_bus(7) AND thermo_bus(5);
-  second_segment_of_four(0) <= NOT thermo_bus(7) AND ((NOT thermo_bus(5) AND thermo_bus(4)) OR (thermo_bus(6) AND thermo_bus(5)));
+  second_segment_of_four(0) <= (NOT thermo_bus(7) AND thermo_bus(6)) OR (NOT thermo_bus(5)  AND thermo_bus(4));
 
   third_segment_of_four(3) <= '0';
   third_segment_of_four(2) <= thermo_bus(3);
   third_segment_of_four(1) <= NOT thermo_bus(3) AND thermo_bus(1);
-  third_segment_of_four(0) <= NOT thermo_bus(3) AND ((NOT thermo_bus(1) AND thermo_bus(0)) OR (thermo_bus(2) AND thermo_bus(1)));
+  third_segment_of_four(0) <= (NOT thermo_bus(3) AND thermo_bus(2)) OR (NOT thermo_bus(1)  AND thermo_bus(0));
 
   first_plus_second_adder : Add4Bits port map (
-    A => first_segment_of_four,
-    B => second_segment_of_four,
-    R => first_plus_second,
+    A  => first_segment_of_four,
+    B  => second_segment_of_four,
+    R  => first_plus_second,
     Rc => carry_out_first_plus_second,
-    C => '0');
+    C  => '0');
 
   plus_third_adder : Add4Bits port map (
-    A => first_plus_second,
-    B => third_segment_of_four,
-    R => binary_out,
+    A  => first_plus_second,
+    B  => third_segment_of_four,
+    R  => binary_out,
     Rc => last_carry_out,
-    C => carry_out_first_plus_second);
+    C  => carry_out_first_plus_second);
 
   error <= (
   (thermo_bus(11) AND NOT thermo_bus(10)) OR
