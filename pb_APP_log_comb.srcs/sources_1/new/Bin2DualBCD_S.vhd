@@ -63,7 +63,7 @@ begin
                 signed_units <= "0101";
                 signed_code <= "0000";
             when "0110" =>
-                signed_units <= "0100";
+                signed_units <= "0110";
                 signed_code <= "0000";
             when "0111" =>
                 signed_units <= "0111";
