@@ -100,6 +100,20 @@ suffisant ($18\text{Mhz}$).
 \end{align}
 
 \subsection{Implémentation}
+Le code VHDL du thermo2bin est donnée dans l'annexe. 3 composantes sont utilisées de façon hiérarchique. Le module thermo2bin aurait pu
+être diviser en sous-modules de 4 bits mais à des fin d'optimisation, les trois conversion de segments de 4 bits thermométrique sont tous
+dans le même module. Au début, après le begin, on retrouve 3 sections quasi identiques. Ces dernières performent les équations booléaine
+de convertions sur les segments de 4 bits en provenance du vecteur thermométrique de 12 bits. Les résultats sont mis dans 3 signaux,
+lesquels sont additionner avec l'additionneur 4 bits un par un. Le résultat du premier plus le deuxième est additionner par la suite avec
+le troisième. Un signaux de "carry" permet de lier les deux additionneur ensemble. Le résultat de l'addition est mise en sortie du module
+thermo2bin. La détection d'erreur suit à la fin du code. Cette dernière à été expliquer dans la section de démarche.
+\\
+Le code VHDL de l'additionneur de 4 bits est simple. 4 composantes d'additionneur 1 bits sont instancié. Des signaux permettent de
+transmettre les "carry" d'un additionneur à un autre, de même pour les signaux d'additions qui permettent d'additionner chaque bits des
+deux nombre de 4 bits ensemble. Le premier module additionne les "LSB" ensemble et donne le "carry" à l'additionneur suivant, qui additionne
+les bits à la position 1 ensemble, ainsi de suite.
+\\
+Les additionneurs 1 bits son simple et sont le résultat d'une table de vérité de laquel une expression booléaine à été construite.
 
 \section{Simulation Complète}
 
