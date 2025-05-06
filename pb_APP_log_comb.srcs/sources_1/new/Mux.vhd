@@ -51,25 +51,21 @@ architecture Behavioral of Mux is
   constant char_E : STD_LOGIC_VECTOR(3 downto 0) := "1110";  -- E
   constant char_r : STD_LOGIC_VECTOR(3 downto 0) := "1111";  -- r (for "Er")
 
-  signal break : BOOLEAN := FALSE;
-
 begin
 
   decide : process(ADCBin, Dizaines, Unites_ns, BTN, erreur, S2, Code_signe, Unite_s)
     begin
       -- HANDLE SWITCH {{{
       if ( (S2 = pressed) or (erreur = '1')) then
-        break <= TRUE; -- Avoids double printing on 7seg
         DAFF1 <= char_E;
         DAFF0 <= char_r;
-      end if;
       -- }}}
+      else
       -- HANDLE BUTTONS {{{
-      if break = FALSE then
         case (BTN) is
           when "00" =>
-             DAFF0 <= Unites_ns;
-             DAFF1 <= Dizaines;
+            DAFF0 <= Unites_ns;
+            DAFF1 <= Dizaines;
           when "01" =>
             -- impossible de buster "C" en hex
             -- encore moins avoir une deuxième décimale
@@ -85,9 +81,9 @@ begin
           when others =>
             DAFF1 <= char_E;
             DAFF0 <= char_r;
-       end case;
+        end case;
+        -- }}}
       end if;
-      -- }}}
 
   end process;
 
