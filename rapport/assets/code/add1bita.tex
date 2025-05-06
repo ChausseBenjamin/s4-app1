@@ -1,0 +1,10 @@
+\begin{verbatim}
+architecture Behavioral of Add1BitA is
+
+begin
+
+  O  <= (X xor Y) xor Ci;
+  Co <= ((X xor Y) and Ci) or (X and Y);
+
+end;
+\end{verbatim}
