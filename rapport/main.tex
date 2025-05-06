@@ -45,8 +45,15 @@
 Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
 est connue en comptant le nombre de bits à un. Donc, les équations logiques doivent compter le nombre de bit à 1. Le code étant 12 bits,
 il a pu être divisé en trois sections de 4 bits ce qui a permis l'utilisation de tableaux de Karnaugh pour trouver les équations. Selon
-la table de vérité d'un code thermométrique de 4 bits, le bit le plus significatif du résultat en binaire n'est jamais à 1. L'équation du
-bit $F$ est donc simplement $F=0$.
+la table de vérité (\todo{\ref{tab:table-de-vérité-thermométrique-4-bits}}) d'un code thermométrique de 4 bits, le bit le plus significatif
+du résultat en binaire n'est jamais à 1. L'équation du bit $E$ est donc simplement $E=0$. Le bit $F$ est uniquement à 1 si $A$ est à un, donc
+l'équation est simplement $F=A$. On a donc besoin des tables pour uniquement deux bits des 4. Les deux tables de karnaugh pour chaque bits
+se retrouvent dans l'annexe (\todo{\ref{tab:karnaugh-bit-G}}, \todo{\ref{tab:karnaugh-bit-H}}). Uniquement l'équation du bit $H$ à eut une
+simplification ou $A'$ à été mis en évidence. Les équations étant assez simplifié sont les suivantes:
+
+\begin{align}
+  E &= 0 \\ F &= A \\ G &= A'C \\ H &= A'(C'D+BC)
+\end{align}
 
 \subsection{Fréquence d'opération}
 
