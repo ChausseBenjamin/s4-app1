@@ -55,9 +55,17 @@ simplification ou $A'$ à été mis en évidence. Les équations étant assez si
   E &= 0 \\ F &= A \\ G &= A'C \\ H &= A'(C'D+BC)
 \end{align}
 
-\subsection{Fréquence d'opération}
+Après, les trois nombre binaires sont additionner ensemble pour obtenir un résultat correspondant au nombre de bits à 1 dans le code
+thermométrique en utilisant des additionneur 4 bits. Pour ce qui est du code d'erreur, une validation par groupe de 2 bits qui s'occuppe
+de s'assurer que le "LSB" n'est pas à 0 si le "MSB" est à un, sur tout les groupe de 2 bits consécutif permet de savoir rapidement s'il
+y a des erreurs. (voir le code en annexe).
 
 \subsection{Explication des schéma blocs}
+
+\subsection{Fréquence d'opération}
+Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
+parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement le schéma créé par Vivado sans qu'il est fait de
+synthèse pour l'optimiser. Le bit ayant la plus grosse opération est le $H$. Ce dernier peut passer dans deux additionneur 4 bits.
 
 \subsection{Implémentation}
 
