@@ -61,11 +61,15 @@ de s'assurer que le "LSB" n'est pas à 0 si le "MSB" est à un, sur tout les gro
 y a des erreurs. (voir le code en annexe).
 
 \subsection{Explication des schéma blocs}
+Thermo2bin est composé de deux additionneur 4 bits, lesquels sont composé de 4 additionneur 1 bits. L'additionneur 1 bit fait avec de la
+logique combinatoire et celui fait avec des commandes "cases" sont synthéthisé par Vivado et donne le même circuit. On retrouve dans le
+module thermométrique 3 sections identiques de convertions thermométrique 4 bits en binaire non signé. Le module thermométrique à aussi
+une section de détection d'erreur qui prend l'entrée directement.
 
 \subsection{Fréquence d'opération}
 Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
-parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement le schéma créé par Vivado sans qu'il est fait de
-synthèse pour l'optimiser. Le bit ayant la plus grosse opération est le $H$. Ce dernier peut passer dans deux additionneur 4 bits.
+parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado. Cependant, Vivado éxecute
+une synthèse du circuit, fesant une optimisation des portes logiques et donc réduisant le nombre utilisé pour le module thermo2bin.
 
 \subsection{Implémentation}
 
