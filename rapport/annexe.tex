@@ -82,6 +82,25 @@
 % \caption{TEMPLATE NOT GOOD}
 % \end{figure}
 
+
+\begin{table}[H]
+	\centering
+	\caption{Table de vérité des Bits}
+	\vspace{.2cm}
+	\begin{tabular}{llllllll}
+		\toprule
+		A & B & C & D & E & F & G & H \\
+		\midrule
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+		0 & 0 & 1 & 1 & 0 & 0 & 1 & 0 \\
+		0 & 1 & 1 & 1 & 0 & 0 & 1 & 1 \\
+		1 & 1 & 1 & 1 & 0 & 1 & 0 & 0 \\
+		\bottomrule
+	\end{tabular}
+
+\end{table}
+
 \begin{figure}[H]
 \centering
 \begin{karnaugh-map}[4][4][1][$D$][$C$][$B$][$A$]
@@ -108,8 +127,3 @@
 \end{karnaugh-map}
 \caption{Karnaugh pour le bit $G$}
 \end{figure}
-
-
-
-\todo{Verite}\\
-\todo{Karnaugh}
