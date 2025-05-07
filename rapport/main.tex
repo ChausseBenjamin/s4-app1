@@ -161,39 +161,78 @@ suite.
 Les additionneurs 1 bit sont eux aussi simples : ils sont issus d’une table
 de vérité à partir de laquelle une expression booléenne a été dérivée.
 
-\section{Simulation Complète}
-Tout les modules du projet ont leurs propre test bench avec leurs tests unitaire. Par conséquent, le testbench de AppCombiTop n'a pas
-tout les tests de 7 segments. Il test que les boutons changent les deux DELs de parité et que l'entrée ADCth change les DELs PMOD.
-Le testbench de Thermo2bin test tout les cas de figure valide et quelques tests invalide. Les autres testbench testent les modules
-individuellement pour tout les cas de figure ou presque tout. Il était donc redondant et trop long de refaire tout ces tests unitaire la
-dans le test bench d'AppCombiTop, car une duplication des fonctionalitées testé aurait lieux.
-\\
-Le banc de test du Mux ne tests pas toutes les possibilitées. Étant donnée qu'il est composé de 3 autres composantes lesquels ont leurs
-propre banc de tests, cela aurait créé des tests redondant. Il test les combinaisons de boutons donnant une erreur,
-s'assure que celle-ci est envoyé aux 7 segments, que l'erreur en entrée fonctionne, et que toutes combinaisons de boutons valide affiche
-les bon nombre sur les 7 segments en sortie. Il test aussi la présence du Moin 5 sur la sortie signée.
-\\
-Le test de thermo2bin n'a pas besoin de tester les $2^{12}$ possibilité. Il suffit de tester les $12$ valide puis de tester que la
-détection d'erreur fonctionne sur toutes les paires de $2$ bits. Ensuite, quelques tests avec plusieurs zéros aléatoire sont effectué
-juste pour confirmé.
-\\
-Les banc de tests utilisent des "assert" qui permet d'afficher dans le terminal si des problèmes ont eut lieux (résultat obtenu diffère
-du résultat voulu). La plus part fonctionne parfaitement tandis que d'autre montre quelques problèmes liés aux "undefined" qui causent des
-affichage d'erreur incohérent tel que: "Obtenu 0 Voulu 0". Malgrès beaucoup de deboggage et le fonctionnement réelle du module, le banc de
-test du Mux montre des problème de changements et est difficile à lire. Le numéro de test est donc fournis dans son chronogramme. Pour le
-banc de test de parité, deux chronogrammes sont fournis en fonction de l'état du bouton (cfg). Les banc de tests démontres quelques
-problèmes de valeurs initiales, comme une valeur de sortie qui change alors que l'entrée n'a pas changé. L'approche utilisé pour faire
-les bancs de tests devra être révisé afin de mitiger ces problèmes de chronogrammes. Tout les banc de tests ont des "expected" pour les
-"outputs" attendu. Leurs noms sont directement en lien avec la fonctionalité du module et pas forcément le nom du signal haut niveau.
+\section{Simulation complète}
+
+Tous les modules du projet possèdent leur propre banc de test, couvrant leurs
+cas d’utilisation de manière unitaire. Par conséquent, le banc de test de
+\texttt{AppCombiTop} ne reprend pas l’ensemble des tests du module 7
+segments. Il vérifie que les boutons modifient les deux DELs de parité et que
+l’entrée \texttt{ADCth} modifie les DELs PMOD.
+
+Le banc de test de \texttt{thermo2bin} couvre tous les cas valides, ainsi que
+quelques cas invalides. Les autres bancs de test valident les modules de
+manière individuelle pour tous — ou presque tous — les cas pertinents. Il
+aurait donc été redondant et inutilement long de dupliquer ces tests
+unitaires dans \texttt{AppCombiTop}.
+
+Le banc de test du \texttt{Mux} ne couvre pas toutes les combinaisons
+possibles. Étant donné qu’il est composé de trois sous-modules ayant chacun
+leur propre banc de test, cela aurait engendré une duplication inutile. Le
+test se concentre sur les combinaisons de boutons causant une erreur, vérifie
+que l’erreur est bien transmise à l’affichage 7 segments, que l’erreur en
+entrée est bien gérée, et que toutes les combinaisons valides produisent la
+bonne valeur affichée. Il vérifie aussi la présence du \texttt{Moins 5} sur
+la sortie signée.
+
+Il n’est pas nécessaire que le test de \texttt{thermo2bin} couvre les
+$2^{12}$ combinaisons possibles. Il suffit de tester les 12 cas valides, de
+vérifier la détection d’erreur sur toutes les paires de 2 bits, puis de
+réaliser quelques tests aléatoires avec des zéros pour confirmer le bon
+fonctionnement général.
+
+
+Les bancs de test utilisent des instructions \texttt{assert} permettant
+d’afficher dans le terminal si une divergence entre le résultat obtenu et le
+résultat attendu survient. La majorité fonctionnent correctement, mais
+certains rencontrent des problèmes liés aux valeurs indéfinies (\texttt{'U'})
+entraînant des messages incohérents comme : "Obtenu 0, Voulu 0".
+Malgré un débogage approfondi et un fonctionnement correct du module en
+simulation, le banc de test du \texttt{Mux} présente encore des incohérences
+dans les transitions, rendant les résultats difficiles à interpréter. Le
+numéro de chaque test est donc indiqué directement sur son chronogramme.
+Pour le banc de test de parité, deux chronogrammes sont fournis,
+correspondant chacun à un état différent du bouton de configuration
+(\texttt{cfg}). Certains tests présentent des problèmes de valeurs initiales,
+comme des sorties changeant d'état sans modification des entrées. La
+méthodologie utilisée pour concevoir les bancs de tests devra être revue pour
+mitiger ces erreurs et clarifier les chronogrammes.
+Tous les bancs de test incluent des valeurs \texttt{expected} pour les
+sorties attendues. Les noms des signaux sont choisis pour refléter la
+fonctionnalité du module testé, et non nécessairement le nom des signaux
+internes de plus haut niveau.
 
 \section{Démarche d'analyse de compatibilité}
-La première étape à été d'analyser le signal d'entrée de la carte thermométrique. La DEL 2 est connecté au connecteur JD1 en
-configuration "pull-up". Ceci dit, il faut donc avoir un 0 logique à son entrée pour l'allumé. Cependant, trois inverseurs sont
-connecté en série avant elle. Soit deux 74V1T04STR et un NC7SP04P5X alimenté à +1.2 Volts. Après analyse de $V_{OH}$, $V_{OL}$, $V_{IL}$
-et $V_{IH}$ des deux portes logiques, le NC7SP04P5X à un $V_{OH}$ de maximum 1.1 volts tandis que le 74V1T04STR à besoin d'un $V_{IH}$
-minimum de 2 Volts. Donc selon le 74V1T04STR, le NC7SP04P5X envoie toujours un niveau logique bas, ce qui résulte à une del
-tout le temps allumé sauf lorsque le connecteur de test de la del est en mode de test car un bon niveau logique haut est envoyé à
-l'entrée des 74V1T04STR.
+
+La première étape a été d'analyser le signal d'entrée de la carte
+thermométrique. La DEL 2 est connectée au connecteur \texttt{JD1} en
+configuration \textit{pull-up}, ce qui signifie qu'un niveau logique bas
+(\texttt{0}) est requis pour l'allumer.
+
+Cependant, trois inverseurs sont connectés en série avant elle : deux
+\texttt{74V1T04STR} et un \texttt{NC7SP04P5X}, alimentés à \SI{1.2}{V}. Après
+analyse des seuils $V_{OH}$, $V_{OL}$, $V_{IH}$ et $V_{IL}$ des composants :
+
+% La premiere etape a ete d'analy
+
+\begin{itemize}
+	\item Le \texttt{NC7SP04P5X} produit un $V_{OH}$ maximal de \SI{1.1}{V} ;
+	\item Le \texttt{74V1T04STR} requiert un $V_{IH}$ minimal de \SI{2.0}{V}.
+\end{itemize}
+
+Cela implique que le signal en sortie du \texttt{NC7SP04P5X} est toujours
+considéré comme un niveau bas par le \texttt{74V1T04STR}. En conséquence, la
+DEL reste allumée en permanence, sauf lorsque le connecteur de test force un
+niveau haut adéquat à l’entrée des \texttt{74V1T04STR}.
 
 \input{annexe.tex}
 \end{document}
