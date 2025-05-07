@@ -75,42 +75,56 @@ s’assure que, pour chaque paire consécutive, le LSB n’est pas à 0 si le MS
 est à 1, ce qui permet une détection rapide d’erreurs éventuelles (voir le
 code en annexe).
 
-\subsection{Explication des schéma blocs}
-Thermo2bin est composé de deux additionneur 4 bits, lesquels sont composé de 4 additionneur 1 bits. L'additionneur 1 bit fait avec de la
-logique combinatoire et celui fait avec des commandes "cases" sont synthéthisé par Vivado et donne le même circuit. On retrouve dans le
-module thermométrique 3 sections identiques de convertions thermométrique 4 bits en binaire non signé. Le module thermométrique à aussi
-une section de détection d'erreur qui prend l'entrée directement. Notez que Vivado optimize certains modules avec des "look-up" tables
-afin de les rendre plus rapide qu'uniquement des portes logiques brute.
+\subsection{Explication des schémas blocs}
 
-\subsection{Fréquence d'opération}
-Pour connaitre la fréquence d'opération maximum, on doit d'abord analyzer le schéma et trouver le plus long chemin qu'une entrée peut
-parcourir avant d'arrivé à la sortie. Ceci peut être fait en regardant simplement les schémas créé par Vivado.
-\\
-Le plus long chemin interne d'un additionneur 1 bit est entre les bits d'entrées et le "carry-out", un total de $3$ portes logiques pour
-le premier additionneur 1 bits. Apres, tout les additionneur 1 bit font une chaine  de "carry-in" à "carry-out" qui prend $2$ portes
-logiques. l'additionneur 4 bits a utilisé 4 additionneur d'un bit. Le plus long chemin de celui-ci est visible
-dans le schéma de l'annexe et est le "daisy-chain" entre le "carry-in" et le "carry-out", qui donne un total de 4 additionneur 1 bit à
-passer au travers. Donc $2\times4+1=9$ portes logiques pour l'additionneur 4 bits. Le module thermo2bin à 2 additionneur 4 bits dans lequel
-un "carry-in" peut se propager. Le deuxième additionneur de 4 bits utiliserait $8$ portes logiques car son entrée est le
-"carry-out" de l'additionneur d'avant. Donc $17$ portes logique. Pour l'entrée du thermo2bin, le bit avec le plus de porte logique pour son
-calcul est le $H$. Avec le chemin suivant: $C'\rightarrow(C'D)\rightarrow(C'D)+(A'B)$, qui résulte en $3$ portes logique
-de plus. le total est donc environ $20$ porte logique.
-\\
-On indique un temps de propagation de $5ns$. Le temps de propagation maximum possible est donc environ $20\times5=100ns$. Sans ajouter de
-temps de lecture, et sans prendre en compte les "buffers" ajouter par Vivado sur les entrés et sorties, la fréquence en Hertz est donc
-très approximativement la suivante:
+Le module \texttt{thermo2bin} est constitué de deux additionneurs 4 bits,
+chacun composé de quatre additionneurs 1 bit. Les additionneurs 1 bit ont été
+implémentés à l’aide de logique combinatoire ainsi que de blocs utilisant des
+instructions \texttt{case}. Le module thermométrique comprend trois sections
+identiques effectuant la conversion d’un code thermométrique 4 bits en un
+code binaire non signé. Il intègre également une section de détection
+d’erreurs, qui agit directement sur l’entrée du module. Il est à noter que
+Vivado optimise certains sous-modules à l’aide de tables de correspondance
+(\textit{look-up tables}) afin d’améliorer leur performance par rapport à une
+implémentation reposant uniquement sur des portes logiques élémentaires.
+
+\subsection{Fréquence d’opération}
+
+Pour déterminer la fréquence d’opération maximale, il faut analyser le schéma
+obtenu lorsque tout les sous-modules sont combinés et identifier le chemin le
+plus long qu’un signal peut parcourir de l’entrée à la sortie. Cette analyse
+peut être effectuée en observant les schémas générés par Vivado.
+
+Le chemin le plus long à l’intérieur d’un additionneur 1 bit se situe entre
+les bits d’entrée et le signal de retenue (\textit{carry-out}), ce qui
+représente un total de 3 portes logiques dans le premier additionneur 1 bit.
+Par la suite, les additionneurs 1 bit sont chaînés via les signaux
+\textit{carry-in} et \textit{carry-out}, avec 2 portes logiques
+supplémentaires par liaison. Un additionneur 4 bits utilise ainsi 4
+additionneurs 1 bit en série, ce qui donne un chemin critique de
+$2 \times 4 + 1 = 9$ portes logiques.
+
+Le module \texttt{thermo2bin} contient deux additionneurs 4 bits chaînés. Le
+second additionneur reçoit en entrée le \textit{carry-out} du premier,
+ajoutant 8 portes logiques supplémentaires. Le total pour les deux blocs est
+donc d’environ 17 portes logiques. Du côté des entrées, le bit le plus
+coûteux en logique est $H$, avec le chemin suivant : $C' \rightarrow (C'D)
+	\rightarrow (C'D + A'B)$, soit 3 portes logiques supplémentaires. On obtient
+ainsi un total d’environ 20 portes logiques.
+
+En supposant un temps de propagation de $5,\text{ns}$ par porte, le temps de propagation maximal est donc approximativement $20 \times 5 = 100,\text{ns}$. Sans tenir compte du temps de lecture ni des \textit{buffers} que Vivado pourrait ajouter aux entrées et sorties, la fréquence maximale estimée est :
 
 \begin{align}
-	10000000 \approx \frac{1}{100\times10^{-9}}
+	\frac{1}{100 \times 10^{-9}} & \approx 10,\text{MHz}
 \end{align}
 
-$10\text{Mhz}$ est loin du $20\text{Mhz}$ demandé. Cependant, Vivado a optimiser l'additionneur d'un bit avec des "look-up tables",
-réduisant le circuit logique de $3$ maximum à $1$, pour un total d'environ $11$ au lieu de $20$. Cependant, ce n'est toujours pas
-suffisant ($18\text{Mhz}$).
+Ce résultat est loin des $20,\text{MHz}$ exigés. Cependant, Vivado optimise les additionneurs 1 bit à l’aide de \textit{look-up tables}, réduisant le circuit logique de 3 à 1 porte logique dans certains cas. Cela abaisse le nombre total de portes logiques à environ 11, ce qui améliore la fréquence maximale à :
 
 \begin{align}
-	18181818 \approx \frac{1}{(11\times5)\times10^{-9}}
+	\frac{1}{11 \times 5 \times 10^{-9}} & \approx 18.18,\text{MHz}
 \end{align}
+
+Ce n’est toujours pas suffisant pour atteindre l’objectif fixé.
 
 \subsection{Implémentation}
 Le code VHDL du thermo2bin est donnée dans l'annexe. 3 composantes sont utilisées de façon hiérarchique. Le module thermo2bin aurait pu
