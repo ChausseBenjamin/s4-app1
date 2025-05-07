@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage{varwidth}
 \usepackage{graphicx}
+\usepackage{siunitx}
 % \usepackage[toc,page]{appendix}
 \usepackage[usenames,dvipsnames]{xcolor}
 
@@ -59,9 +60,9 @@ chaque bit, se trouvent en annexe (\ref{tab:karnaugh-bit-G} et
 \ref{tab:karnaugh-bit-H}). Les équations étant assez simple, aucune simplification d'équations était nécessaire.
 
 \begin{align}
-	E & = 0 \
-	F & = A \
-	G & = A'C \
+	E & = 0         \\
+	F & = A         \\
+	G & = A'C       \\
 	H & = C'D + A'B
 \end{align}
 
@@ -110,35 +111,55 @@ coûteux en logique est $H$, avec le chemin suivant : $C' \rightarrow (C'D)
 	\rightarrow (C'D + A'B)$, soit 3 portes logiques supplémentaires. On obtient
 ainsi un total d’environ 20 portes logiques.
 
-En supposant un temps de propagation de $5,\text{ns}$ par porte, le temps de propagation maximal est donc approximativement $20 \times 5 = 100,\text{ns}$. Sans tenir compte du temps de lecture ni des \textit{buffers} que Vivado pourrait ajouter aux entrées et sorties, la fréquence maximale estimée est :
+En supposant un temps de propagation de $5,\text{ns}$ par porte, le temps de
+propagation maximal est donc approximativement $20 \times 5 = 100,\text{ns}$.
+Sans tenir compte du temps de lecture ni des \textit{buffers} que Vivado
+pourrait ajouter aux entrées et sorties, la fréquence maximale estimée est :
 
 \begin{align}
-	\frac{1}{100 \times 10^{-9}} & \approx 10,\text{MHz}
+	\frac{1}{100 \times 10^{-9}} & \approx \SI{10}{\mega\hertz}
 \end{align}
 
-Ce résultat est loin des $20,\text{MHz}$ exigés. Cependant, Vivado optimise les additionneurs 1 bit à l’aide de \textit{look-up tables}, réduisant le circuit logique de 3 à 1 porte logique dans certains cas. Cela abaisse le nombre total de portes logiques à environ 11, ce qui améliore la fréquence maximale à :
+Ce résultat est loin des $20,\text{MHz}$ exigés. Cependant, Vivado optimise
+les additionneurs 1 bit à l’aide de \textit{look-up tables}, réduisant le
+circuit logique de 3 à 1 porte logique dans certains cas. Cela abaisse le
+nombre total de portes logiques à environ 11, ce qui améliore la fréquence
+maximale à:
 
 \begin{align}
-	\frac{1}{11 \times 5 \times 10^{-9}} & \approx 18.18,\text{MHz}
+	\frac{1}{11 \times 5 \times 10^{-9}} & \approx \SI{18.18}{\mega\hertz}
 \end{align}
 
 Ce n’est toujours pas suffisant pour atteindre l’objectif fixé.
 
 \subsection{Implémentation}
-Le code VHDL du thermo2bin est donnée dans l'annexe. 3 composantes sont utilisées de façon hiérarchique. Le module thermo2bin aurait pu
-être diviser en sous-modules de 4 bits mais à des fin d'optimisation, les trois conversion de segments de 4 bits thermométrique sont tous
-dans le même module. Au début, après le begin, on retrouve 3 sections quasi identiques. Ces dernières performent les équations booléaine
-de convertions sur les segments de 4 bits en provenance du vecteur thermométrique de 12 bits. Les résultats sont mis dans 3 signaux,
-lesquels sont additionner avec l'additionneur 4 bits un par un. Le résultat du premier plus le deuxième est additionner par la suite avec
-le troisième. Un signaux de "carry" permet de lier les deux additionneur ensemble. Le résultat de l'addition est mise en sortie du module
-thermo2bin. La détection d'erreur suit à la fin du code. Cette dernière à été expliquer dans la section de démarche.
-\\
-Le code VHDL de l'additionneur de 4 bits est simple. 4 composantes d'additionneur 1 bits sont instancié. Des signaux permettent de
-transmettre les "carry" d'un additionneur à un autre, de même pour les signaux d'additions qui permettent d'additionner chaque bits des
-deux nombre de 4 bits ensemble. Le premier module additionne les "LSB" ensemble et donne le "carry" à l'additionneur suivant, qui additionne
-les bits à la position 1 ensemble, ainsi de suite.
-\\
-Les additionneurs 1 bits son simple et sont le résultat d'une table de vérité de laquel une expression booléaine à été construite.
+
+Le code VHDL du module \texttt{thermo2bin} est fourni en annexe. Trois
+composantes sont utilisées de façon hiérarchique. Le module principal aurait
+pu être divisé en sous-modules de 4 bits, mais pour des raisons
+d’optimisation, les trois conversions de segments de 4 bits du vecteur
+thermométrique de 12 bits sont intégrées dans un seul bloc.
+
+Après l’instruction \texttt{begin}, on retrouve trois sections quasi
+identiques effectuant les équations booléennes de conversion. Les résultats
+sont stockés dans trois signaux intermédiaires, lesquels sont additionnés
+séquentiellement à l’aide d’additionneurs 4 bits. Le résultat du premier et
+du deuxième segment est additionné, puis le résultat est additionné au
+troisième segment. Un signal de retenue (\textit{carry}) permet la liaison
+entre les deux additionneurs. Le résultat final est assigné à la sortie du
+module \texttt{thermo2bin}. La logique de détection d’erreur est placée à la
+fin du code et a été expliquée dans la section sur la démarche.
+
+Le code VHDL de l’additionneur 4 bits est simple : quatre instances de
+l’additionneur 1 bit y sont instanciées. Des signaux intermédiaires assurent
+la propagation du \textit{carry} d’un bloc à l’autre ainsi que la
+transmission des bits à additionner à chaque position. Le premier
+additionneur traite les bits de poids faible (\textit{LSB}) et transmet le
+\textit{carry} au suivant, qui additionne les bits de poids 1, et ainsi de
+suite.
+
+Les additionneurs 1 bit sont eux aussi simples : ils sont issus d’une table
+de vérité à partir de laquelle une expression booléenne a été dérivée.
 
 \section{Simulation Complète}
 Tout les modules du projet ont leurs propre test bench avec leurs tests unitaire. Par conséquent, le testbench de AppCombiTop n'a pas
