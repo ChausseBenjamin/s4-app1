@@ -39,26 +39,41 @@
 \tableofcontents
 \newpage
 
-\section{Module thermo2bin}
-
+\section{Module \texttt{thermo2bin}}
 \subsection{Démarche et équations}
-Le but était de convertir un code thermométrique de 12 bits en binaire 4 bits non signé. Hors, le nombre afficher par ce genre de code
-est connue en comptant le nombre de bits à un. Donc, les équations logiques doivent compter le nombre de bit à 1. Le code étant 12 bits,
-il a pu être divisé en trois sections de 4 bits ce qui a permis l'utilisation de tableaux de Karnaugh pour trouver les équations. Selon
-la table de vérité  du code thermométrique de 4 bits (\ref{tab:table-de-vérité-thermométrique-4-bits}), le bit le plus significatif
-du résultat en binaire n'est jamais à 1. L'équation du bit $E$ est donc simplement $E=0$. Le bit $F$ est uniquement à 1 si $A$ est à un, donc
-l'équation est simplement $F=A$. On a donc besoin des tables pour uniquement deux bits des 4. Les deux tables de karnaugh pour chaque bits
-se retrouvent dans l'annexe (\ref{tab:karnaugh-bit-G} et \ref{tab:karnaugh-bit-H}). Uniquement l'équation du bit $H$ à eut une
-simplification ou $A'$ à été mis en évidence. Les équations étant assez simplifié sont les suivantes:
+
+L’objectif était de convertir un code thermométrique de 12 bits en un code
+binaire non signé sur 4 bits. Le nombre représenté par un tel code est obtenu
+en comptant le nombre de bits à 1. Les équations logiques doivent donc
+effectuer ce comptage. Étant donné que le code est sur 12 bits, il a été
+divisé en trois groupes de 4 bits, ce qui a permis l'utilisation de tables de
+Karnaugh pour déterminer les équations logiques.
+
+D'après la table de vérité du code thermométrique 4 bits
+(\ref{tab:table-de-vérité-thermométrique-4-bits}), le bit le plus
+significatif du résultat binaire n’est jamais à 1. L'équation du bit $E$ est
+donc simplement $E = 0$. Le bit $F$ est à 1 uniquement si $A$ l’est
+également, d’où l’équation $F = A$. Les tables de Karnaugh ont donc été
+utilisées uniquement pour les deux bits restants. Les deux tables, une pour
+chaque bit, se trouvent en annexe (\ref{tab:karnaugh-bit-G} et
+\ref{tab:karnaugh-bit-H}). Seule l'équation du bit $H$ a subi une
+simplification, où $A'$ a été mis en facteur. Les équations obtenues sont
+relativement simples :
 
 \begin{align}
-	E & = 0 \\ F &= A \\ G &= A'C \\ H &= C'D+A'B
+	E & = 0 \
+	F & = A \
+	G & = A'C \
+	H & = C'D + A'B
 \end{align}
 
-Après, les trois nombre binaires sont additionner ensemble pour obtenir un résultat correspondant au nombre de bits à 1 dans le code
-thermométrique en utilisant des additionneur 4 bits. Pour ce qui est du code d'erreur, une validation par groupe de 2 bits qui s'occuppe
-de s'assurer que le "LSB" n'est pas à 0 si le "MSB" est à un, sur tout les groupe de 2 bits consécutif permet de savoir rapidement s'il
-y a des erreurs. (voir le code en annexe).
+Les trois résultats binaires sont ensuite additionnés à l’aide d’un
+additionneur 4 bits, afin d’obtenir la valeur totale correspondant au nombre
+de bits à 1 dans le code thermométrique. En ce qui concerne la détection
+d'erreurs, une vérification par groupe de 2 bits est effectuée. Celle-ci
+s’assure que, pour chaque paire consécutive, le LSB n’est pas à 0 si le MSB
+est à 1, ce qui permet une détection rapide d’erreurs éventuelles (voir le
+code en annexe).
 
 \subsection{Explication des schéma blocs}
 Thermo2bin est composé de deux additionneur 4 bits, lesquels sont composé de 4 additionneur 1 bits. L'additionneur 1 bit fait avec de la
