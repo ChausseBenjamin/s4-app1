@@ -1,83 +1,6 @@
 \newpage
 \appendix
-
-\begin{figure}[H]
-
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-bin2dualbcd.png}
-		\caption{graph-bin2dualbcd}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-bin2dualbcd-signed.png}
-		\caption{graph-bin2dualbcd-signed}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-bin2dualbcd-unsigned.png}
-		\caption{graph-bin2dualbcd-unsigned}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-dec-2-a-8.png}
-		\caption{graph-dec-2-a-8}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-moins5.png}
-		\caption{graph-moins5}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-mult-2-3.png}
-		\caption{graph-mult-2-3}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-parite-pressed.png}
-		\caption{graph-parite-pressed}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-parite-unpressed.png}
-		\caption{graph-parite-unpressed}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-mux.png}
-		\caption{graph-mux}
-	\end{subfigure}
-	\begin{subfigure}{.496\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-thermo2bin.png}
-		\caption{graph-thermo2bin}
-	\end{subfigure}
-	\caption{Chronogrames des simulations Vivado}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}{0.60 \linewidth}
-		\centering
-		\vfill
-		\includegraphics[width=\textwidth]{assets/img/schematic-add1bita.png}
-		\caption{Add1BitA: Conception parallèle}
-	\end{subfigure} \hfill
-	\begin{subfigure}{0.39 \linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/schematic-add1bitb.png}
-		\caption{Conception séquentielle avec \textit{CASE}}
-	\end{subfigure}
-	\begin{subfigure}{.49\linewidth}
-		\centering
-		\includegraphics[width=\textwidth]{assets/img/graph-appcombitop.png}
-		\caption{graph-appcombitop}
-	\end{subfigure}
-	\caption{Additionneurs 1 bit}
-\end{figure}
-
-
+\input{chronographe-bigmama.tex}
 
 \section{Code VHDL}
 
@@ -97,6 +20,24 @@
 		\input{assets/code/add4bits.tex}
 	\end{varwidth}
 	\caption{Module Add4Bits}
+\end{figure}
+
+\begin{figure}[H]
+	\tiny
+	\centering
+	\begin{varwidth}{\linewidth}
+		\input{assets/code/add1bita.tex}
+	\end{varwidth}
+	\caption{Module Add1BitA}
+\end{figure}
+
+\begin{figure}[H]
+	\tiny
+	\centering
+	\begin{varwidth}{\linewidth}
+		\input{assets/code/add1bitb.tex}
+	\end{varwidth}
+	\caption{Module Add1BitB}
 \end{figure}
 
 \section{Schémas Bloc}
@@ -130,7 +71,6 @@
 \end{figure}
 
 
-\newpage
 \section{Tables de Vérité et Karnaugh}
 
 \begin{table}[H]
@@ -152,6 +92,21 @@
 
 \end{table}
 
+% \begin{figure}[H]
+% \centering
+% \begin{karnaugh-map}[4][4][1][$D$][$C$][$B$][$A$]
+% \manualterms{
+%   0,1,2,3,
+%   4,5,6,7,
+%   8,9,10,11,
+%   12,13,14,15
+% }
+% \implicant{1}{9}
+% \implicant{4}{6}
+% \end{karnaugh-map}
+% \caption{Karnaugh pour le bit $H$}
+% \end{figure}
+%
 \begin{figure}[H]
 \centering
 \begin{karnaugh-map}[4][4][1][$D$][$C$][$B$][$A$]
